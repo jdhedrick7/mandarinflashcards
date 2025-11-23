@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,500 +11,498 @@
             box-sizing: border-box;
         }
 
-```
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        min-height: 100vh;
-        padding: 1rem;
-    }
-
-    .container {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    .header {
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-
-    .header h1 {
-        font-size: 2rem;
-        color: #78350f;
-        margin-bottom: 0.5rem;
-    }
-
-    .header p {
-        color: #92400e;
-        font-size: 0.95rem;
-    }
-
-    .menu-toggle {
-        position: fixed;
-        top: 1rem;
-        left: 1rem;
-        background: #f59e0b;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
-        font-weight: bold;
-        cursor: pointer;
-        z-index: 1000;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        font-size: 0.875rem;
-    }
-
-    .menu-toggle:active {
-        background: #d97706;
-    }
-
-    .side-menu {
-        position: fixed;
-        top: 0;
-        left: -320px;
-        width: 320px;
-        height: 100vh;
-        background: white;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        transition: left 0.3s ease;
-        z-index: 999;
-        overflow-y: auto;
-        padding: 1rem;
-    }
-
-    .side-menu.open {
-        left: 0;
-    }
-
-    .menu-header {
-        font-size: 1.25rem;
-        font-weight: bold;
-        color: #78350f;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #fcd34d;
-    }
-
-    .menu-section {
-        margin-bottom: 1.5rem;
-    }
-
-    .menu-section-title {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: #92400e;
-        margin-bottom: 0.5rem;
-        text-transform: uppercase;
-    }
-
-    .menu-item {
-        padding: 0.75rem;
-        margin-bottom: 0.5rem;
-        background: #fef3c7;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s;
-        border: 2px solid transparent;
-    }
-
-    .menu-item:hover:not(.locked) {
-        background: #fde68a;
-    }
-
-    .menu-item.active {
-        background: #f59e0b;
-        color: white;
-        border-color: #d97706;
-    }
-
-    .menu-item.completed {
-        background: #d1fae5;
-        border-color: #10b981;
-    }
-
-    .menu-item.locked {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .menu-item-title {
-        font-weight: 600;
-        font-size: 0.875rem;
-    }
-
-    .menu-item-subtitle {
-        font-size: 0.75rem;
-        opacity: 0.8;
-        margin-top: 0.25rem;
-    }
-
-    .menu-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 998;
-        display: none;
-    }
-
-    .menu-overlay.open {
-        display: block;
-    }
-
-    .phase-indicator {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 1rem;
-        margin-bottom: 1rem;
-        text-align: center;
-    }
-
-    .phase-title {
-        font-size: 1.25rem;
-        font-weight: bold;
-        color: #78350f;
-        margin-bottom: 0.5rem;
-    }
-
-    .phase-subtitle {
-        color: #6b7280;
-        font-size: 0.875rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .streak-info {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-top: 0.75rem;
-        flex-wrap: wrap;
-    }
-
-    .streak-badge {
-        background: #fef3c7;
-        color: #92400e;
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;
-        font-size: 0.875rem;
-        font-weight: 600;
-    }
-
-    .card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .progress-info {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #374151;
-    }
-
-    .progress-bar {
-        width: 100%;
-        height: 10px;
-        background: #e5e7eb;
-        border-radius: 9999px;
-        overflow: hidden;
-    }
-
-    .progress-fill {
-        height: 100%;
-        background: #f59e0b;
-        transition: width 0.3s ease;
-    }
-
-    .flashcard {
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        padding: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .word-display {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .chinese-text {
-        font-size: 5rem;
-        font-weight: bold;
-        color: #78350f;
-        margin-bottom: 0.5rem;
-        line-height: 1.2;
-    }
-
-    .pinyin-text {
-        font-size: 1.5rem;
-        color: #92400e;
-        margin-bottom: 0.5rem;
-    }
-
-    .english-label {
-        color: #6b7280;
-        font-size: 0.875rem;
-    }
-
-    .input-section {
-        margin-bottom: 1.5rem;
-    }
-
-    .input-label {
-        display: block;
-        text-align: center;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #374151;
-        margin-bottom: 0.5rem;
-    }
-
-    .word-input {
-        width: 100%;
-        font-size: 2.5rem;
-        text-align: center;
-        border: 2px solid #fcd34d;
-        border-radius: 8px;
-        padding: 1rem;
-        outline: none;
-    }
-
-    .word-input:focus {
-        border-color: #f59e0b;
-        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
-    }
-
-    .input-tip {
-        text-align: center;
-        font-size: 0.75rem;
-        color: #6b7280;
-        margin-top: 0.5rem;
-    }
-
-    .feedback-box {
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-        border: 2px solid;
-        text-align: center;
-    }
-
-    .feedback-box.correct {
-        background: #f0fdf4;
-        border-color: #22c55e;
-    }
-
-    .feedback-box.incorrect {
-        background: #fef2f2;
-        border-color: #ef4444;
-    }
-
-    .feedback-box.skipped {
-        background: #fefce8;
-        border-color: #eab308;
-    }
-
-    .feedback-box.practiced {
-        background: #f0fdf4;
-        border-color: #22c55e;
-    }
-
-    .feedback-box.practice-incorrect {
-        background: #fff7ed;
-        border-color: #fb923c;
-    }
-
-    .feedback-icon {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .feedback-title {
-        font-size: 1.25rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-
-    .feedback-box.correct .feedback-title {
-        color: #15803d;
-    }
-
-    .feedback-box.incorrect .feedback-title {
-        color: #b91c1c;
-    }
-
-    .feedback-box.skipped .feedback-title {
-        color: #a16207;
-    }
-
-    .feedback-box.practiced .feedback-title {
-        color: #15803d;
-    }
-
-    .feedback-box.practice-incorrect .feedback-title {
-        color: #ea580c;
-    }
-
-    .feedback-subtitle {
-        font-size: 0.875rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .answer-display {
-        font-size: 4rem;
-        font-weight: bold;
-        color: #78350f;
-        margin: 1rem 0;
-    }
-
-    .answer-details {
-        color: #92400e;
-        font-size: 1.25rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .answer-meaning {
-        color: #4b5563;
-        font-size: 1rem;
-    }
-
-    .button-group {
-        display: flex;
-        gap: 0.75rem;
-    }
-
-    .btn {
-        flex: 1;
-        padding: 1rem;
-        font-size: 1rem;
-        font-weight: bold;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    .btn:active {
-        transform: scale(0.98);
-    }
-
-    .btn-yellow {
-        background: #eab308;
-        color: white;
-    }
-
-    .btn-yellow:active {
-        background: #ca8a04;
-    }
-
-    .btn-primary {
-        background: #f59e0b;
-        color: white;
-    }
-
-    .btn-primary:active {
-        background: #d97706;
-    }
-
-    .btn-orange {
-        background: #f97316;
-        color: white;
-    }
-
-    .btn-orange:active {
-        background: #ea580c;
-    }
-
-    .btn-green {
-        background: #22c55e;
-        color: white;
-    }
-
-    .btn-green:active {
-        background: #16a34a;
-    }
-
-    .btn:disabled {
-        background: #d1d5db;
-        cursor: not-allowed;
-        opacity: 0.6;
-    }
-
-    .btn-full {
-        width: 100%;
-    }
-
-    .completion-message {
-        text-align: center;
-    }
-
-    .completion-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #78350f;
-        margin-bottom: 1rem;
-    }
-
-    .completion-text {
-        color: #374151;
-        margin-bottom: 1.5rem;
-        line-height: 1.6;
-    }
-
-    @media (min-width: 640px) {
         body {
-            padding: 2rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
+            color: #78350f;
+            margin-bottom: 0.5rem;
         }
 
         .header p {
-            font-size: 1rem;
+            color: #92400e;
+            font-size: 0.95rem;
+        }
+
+        .menu-toggle {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 0.875rem;
+        }
+
+        .menu-toggle:active {
+            background: #d97706;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .menu-header {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #fcd34d;
+        }
+
+        .menu-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .menu-item {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #fef3c7;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .menu-item:hover:not(.locked) {
+            background: #fde68a;
+        }
+
+        .menu-item.active {
+            background: #f59e0b;
+            color: white;
+            border-color: #d97706;
+        }
+
+        .menu-item.completed {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .menu-item.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .menu-item-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .menu-item-subtitle {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-top: 0.25rem;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            display: none;
+        }
+
+        .menu-overlay.open {
+            display: block;
+        }
+
+        .phase-indicator {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .phase-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-subtitle {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .streak-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .streak-badge {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
         }
 
         .card {
-            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #f59e0b;
+            transition: width 0.3s ease;
         }
 
         .flashcard {
-            padding: 2.5rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .word-display {
+            text-align: center;
+            margin-bottom: 2rem;
         }
 
         .chinese-text {
-            font-size: 6rem;
+            font-size: 5rem;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .pinyin-text {
+            font-size: 1.5rem;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .english-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .input-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
         }
 
         .word-input {
-            font-size: 3rem;
+            width: 100%;
+            font-size: 2.5rem;
+            text-align: center;
+            border: 2px solid #fcd34d;
+            border-radius: 8px;
+            padding: 1rem;
+            outline: none;
+        }
+
+        .word-input:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .input-tip {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        .feedback-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 2px solid;
+            text-align: center;
+        }
+
+        .feedback-box.correct {
+            background: #f0fdf4;
+            border-color: #22c55e;
+        }
+
+        .feedback-box.incorrect {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+
+        .feedback-box.skipped {
+            background: #fefce8;
+            border-color: #eab308;
+        }
+
+        .feedback-box.practiced {
+            background: #f0fdf4;
+            border-color: #22c55e;
+        }
+
+        .feedback-box.practice-incorrect {
+            background: #fff7ed;
+            border-color: #fb923c;
+        }
+
+        .feedback-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-box.correct .feedback-title {
+            color: #15803d;
+        }
+
+        .feedback-box.incorrect .feedback-title {
+            color: #b91c1c;
+        }
+
+        .feedback-box.skipped .feedback-title {
+            color: #a16207;
+        }
+
+        .feedback-box.practiced .feedback-title {
+            color: #15803d;
+        }
+
+        .feedback-box.practice-incorrect .feedback-title {
+            color: #ea580c;
+        }
+
+        .feedback-subtitle {
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
         }
 
         .answer-display {
-            font-size: 5rem;
+            font-size: 4rem;
+            font-weight: bold;
+            color: #78350f;
+            margin: 1rem 0;
         }
-    }
-</style>
-```
 
+        .answer-details {
+            color: #92400e;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .answer-meaning {
+            color: #4b5563;
+            font-size: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-yellow {
+            background: #eab308;
+            color: white;
+        }
+
+        .btn-yellow:active {
+            background: #ca8a04;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-primary:active {
+            background: #d97706;
+        }
+
+        .btn-orange {
+            background: #f97316;
+            color: white;
+        }
+
+        .btn-orange:active {
+            background: #ea580c;
+        }
+
+        .btn-green {
+            background: #22c55e;
+            color: white;
+        }
+
+        .btn-green:active {
+            background: #16a34a;
+        }
+
+        .btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .completion-message {
+            text-align: center;
+        }
+
+        .completion-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 1rem;
+        }
+
+        .completion-text {
+            color: #374151;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        @media (min-width: 640px) {
+            body {
+                padding: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .flashcard {
+                padding: 2.5rem;
+            }
+
+            .chinese-text {
+                font-size: 6rem;
+            }
+
+            .word-input {
+                font-size: 3rem;
+            }
+
+            .answer-display {
+                font-size: 5rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="sideMenu"></div>
     <div id="root"></div>
+
     <script>
         const vocabulary = [
             { chinese: '我', pinyin: 'wǒ', zhuyin: 'ㄨㄛˇ', english: 'I, me' },
@@ -610,211 +607,219 @@
             { chinese: '中', pinyin: 'zhōng', zhuyin: 'ㄓㄨㄥ', english: 'middle, center, China' }
         ];
 
-```
-    const phase1Groups = [];
-    for (let i = 0; i < vocabulary.length; i += 5) {
-        phase1Groups.push(vocabulary.slice(i, i + 5));
-    }
-
-    const phase2Groups = [
-        vocabulary.slice(0, 33),
-        vocabulary.slice(33, 67),
-        vocabulary.slice(67, 100)
-    ];
-
-    const phase3Group = [vocabulary];
-
-    function shuffle(array) {
-        const newArray = [...array];
-        for (let i = newArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-        }
-        return newArray;
-    }
-
-    let phase = 1;
-    let groupIndex = 0;
-    let perfectRounds = 0;
-    let currentRoundErrors = 0;
-    let cards = [];
-    let currentIndex = 0;
-    let userInput = '';
-    let feedback = null;
-    let showAnswer = false;
-    let mustPractice = false;
-    let completedGroups = new Set();
-
-    function toggleMenu() {
-        const menu = document.getElementById('sideMenu');
-        const overlay = document.getElementById('menuOverlay');
-        menu.classList.toggle('open');
-        overlay.classList.toggle('open');
-    }
-
-    function renderMenu() {
-        const menu = document.getElementById('sideMenu');
-        let html = '<div class="menu-header">Select Stage & Set</div>';
-
-        html += '<div class="menu-section"><div class="menu-section-title">Phase 1: Small Groups (5 words)</div>';
-        for (let i = 0; i < phase1Groups.length; i++) {
-            const isActive = phase === 1 && groupIndex === i;
-            const isCompleted = completedGroups.has(`1-${i}`);
-            const isLocked = i > 0 && !completedGroups.has(`1-${i-1}`) && !(phase === 1 && groupIndex === i);
-            html += `<div class="menu-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}" onclick="selectGroup(1, ${i})">
-                <div class="menu-item-title">Group ${i + 1} ${isCompleted ? '✓' : ''}</div>
-                <div class="menu-item-subtitle">${phase1Groups[i].length} words</div>
-            </div>`;
-        }
-        html += '</div>';
-
-        html += '<div class="menu-section"><div class="menu-section-title">Phase 2: Medium Groups (~33 words)</div>';
-        for (let i = 0; i < phase2Groups.length; i++) {
-            const isActive = phase === 2 && groupIndex === i;
-            const isCompleted = completedGroups.has(`2-${i}`);
-            const isLocked = (phase < 2 || (phase === 2 && groupIndex < i)) && !completedGroups.has(`2-${i}`);
-            html += `<div class="menu-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}" onclick="selectGroup(2, ${i})">
-                <div class="menu-item-title">Group ${i + 1} ${isCompleted ? '✓' : ''}</div>
-                <div class="menu-item-subtitle">${phase2Groups[i].length} words</div>
-            </div>`;
-        }
-        html += '</div>';
-
-        html += '<div class="menu-section"><div class="menu-section-title">Phase 3: Final Review (100 words)</div>';
-        const isActive3 = phase === 3;
-        const isCompleted3 = completedGroups.has('3-0');
-        const isLocked3 = phase < 3 && !completedGroups.has('3-0');
-        html += `<div class="menu-item ${isActive3 ? 'active' : ''} ${isCompleted3 ? 'completed' : ''} ${isLocked3 ? 'locked' : ''}" onclick="selectGroup(3, 0)">
-            <div class="menu-item-title">All 100 Words ${isCompleted3 ? '✓' : ''}</div>
-            <div class="menu-item-subtitle">Final mastery test</div>
-        </div></div>`;
-
-        menu.innerHTML = html;
-    }
-
-    function selectGroup(newPhase, newGroupIndex) {
-        const isLocked = (newPhase > phase) || (newPhase === phase && newGroupIndex > groupIndex);
-        if (isLocked && !completedGroups.has(`${newPhase}-${newGroupIndex}`)) {
-            return;
+        const phase1Groups = [];
+        for (let i = 0; i < vocabulary.length; i += 5) {
+            phase1Groups.push(vocabulary.slice(i, i + 5));
         }
 
-        phase = newPhase;
-        groupIndex = newGroupIndex;
-        perfectRounds = 0;
-        currentRoundErrors = 0;
-        loadCurrentGroup();
-        toggleMenu();
-    }
+        const phase2Groups = [
+            vocabulary.slice(0, 33),
+            vocabulary.slice(33, 67),
+            vocabulary.slice(67, 100)
+        ];
 
-    function initializePhase() {
-        groupIndex = 0;
-        perfectRounds = 0;
-        currentRoundErrors = 0;
-        loadCurrentGroup();
-    }
+        const phase3Group = [vocabulary];
 
-    function loadCurrentGroup() {
-        let groups;
-        if (phase === 1) groups = phase1Groups;
-        else if (phase === 2) groups = phase2Groups;
-        else groups = phase3Group;
+        function shuffle(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
 
-        if (groupIndex >= groups.length) {
-            if (phase === 3) {
-                showCompletion();
-                return;
-            } else {
-                phase++;
-                initializePhase();
+        let phase = 1;
+        let groupIndex = 0;
+        let perfectRounds = 0;
+        let currentRoundErrors = 0;
+        let cards = [];
+        let currentIndex = 0;
+        let userInput = '';
+        let feedback = null;
+        let showAnswer = false;
+        let mustPractice = false;
+        let completedGroups = new Set();
+
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        function renderMenu() {
+            const menu = document.getElementById('sideMenu');
+            let html = '<div class="menu-header">Select Stage & Set</div>';
+
+            html += '<div class="menu-section"><div class="menu-section-title">Phase 1: Small Groups (5 words)</div>';
+            for (let i = 0; i < phase1Groups.length; i++) {
+                const isActive = phase === 1 && groupIndex === i;
+                const isCompleted = completedGroups.has(`1-${i}`);
+                const isLocked = i > 0 && !completedGroups.has(`1-${i-1}`) && !(phase === 1 && groupIndex === i);
+                html += `<div class="menu-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}" onclick="selectGroup(1, ${i})">
+                    <div class="menu-item-title">Group ${i + 1} ${isCompleted ? '✓' : ''}</div>
+                    <div class="menu-item-subtitle">${phase1Groups[i].length} words</div>
+                </div>`;
+            }
+            html += '</div>';
+
+            html += '<div class="menu-section"><div class="menu-section-title">Phase 2: Medium Groups (~33 words)</div>';
+            for (let i = 0; i < phase2Groups.length; i++) {
+                const isActive = phase === 2 && groupIndex === i;
+                const isCompleted = completedGroups.has(`2-${i}`);
+                const isLocked = (phase < 2 || (phase === 2 && groupIndex < i)) && !completedGroups.has(`2-${i}`);
+                html += `<div class="menu-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}" onclick="selectGroup(2, ${i})">
+                    <div class="menu-item-title">Group ${i + 1} ${isCompleted ? '✓' : ''}</div>
+                    <div class="menu-item-subtitle">${phase2Groups[i].length} words</div>
+                </div>`;
+            }
+            html += '</div>';
+
+            html += '<div class="menu-section"><div class="menu-section-title">Phase 3: Final Review (100 words)</div>';
+            const isActive3 = phase === 3;
+            const isCompleted3 = completedGroups.has('3-0');
+            const isLocked3 = phase < 3 && !completedGroups.has('3-0');
+            html += `<div class="menu-item ${isActive3 ? 'active' : ''} ${isCompleted3 ? 'completed' : ''} ${isLocked3 ? 'locked' : ''}" onclick="selectGroup(3, 0)">
+                <div class="menu-item-title">All 100 Words ${isCompleted3 ? '✓' : ''}</div>
+                <div class="menu-item-subtitle">Final mastery test</div>
+            </div></div>`;
+
+            menu.innerHTML = html;
+        }
+
+        function selectGroup(newPhase, newGroupIndex) {
+            const isLocked = (newPhase > phase) || (newPhase === phase && newGroupIndex > groupIndex);
+            if (isLocked && !completedGroups.has(`${newPhase}-${newGroupIndex}`)) {
                 return;
             }
+
+            phase = newPhase;
+            groupIndex = newGroupIndex;
+            perfectRounds = 0;
+            currentRoundErrors = 0;
+            loadCurrentGroup();
+            toggleMenu();
         }
 
-        cards = shuffle(groups[groupIndex]);
-        currentIndex = 0;
-        userInput = '';
-        feedback = null;
-        showAnswer = false;
-        mustPractice = false;
-    }
-
-    function getCurrentCard() {
-        return cards[currentIndex];
-    }
-
-    function checkAnswer() {
-        const currentCard = getCurrentCard();
-        if (!currentCard || userInput.trim() === '') return;
-
-        // Accept either Chinese characters OR Zhuyin as correct
-        const inputTrimmed = userInput.trim();
-        const isCorrect = inputTrimmed === currentCard.chinese || inputTrimmed === currentCard.zhuyin;
-        
-        if (mustPractice) {
-            if (isCorrect) {
-                feedback = 'practiced';
-                showAnswer = true;
-                mustPractice = false;
-            } else {
-                feedback = 'practice-incorrect';
-                showAnswer = true;
-            }
-        } else {
-            feedback = isCorrect ? 'correct' : 'incorrect';
-            showAnswer = true;
-
-            if (!isCorrect) {
-                currentRoundErrors++;
-            }
+        function initializePhase() {
+            groupIndex = 0;
+            perfectRounds = 0;
+            currentRoundErrors = 0;
+            loadCurrentGroup();
         }
 
-        render();
-    }
+        function loadCurrentGroup() {
+            let groups;
+            if (phase === 1) groups = phase1Groups;
+            else if (phase === 2) groups = phase2Groups;
+            else groups = phase3Group;
 
-    function handleDontKnow() {
-        currentRoundErrors++;
-        feedback = 'skipped';
-        showAnswer = true;
-        mustPractice = true;
-        render();
-    }
+            if (groupIndex >= groups.length) {
+                if (phase === 3) {
+                    showCompletion();
+                    return;
+                } else {
+                    phase++;
+                    initializePhase();
+                    return;
+                }
+            }
 
-    function tryAgain() {
-        userInput = '';
-        showAnswer = false;
-        feedback = null;
-        render();
-        
-        setTimeout(() => {
-            const input = document.getElementById('wordInput');
-            if (input) input.focus();
-        }, 0);
-    }
-
-    function nextCard() {
-        if (currentIndex < cards.length - 1) {
-            currentIndex++;
+            cards = shuffle(groups[groupIndex]);
+            currentIndex = 0;
             userInput = '';
             feedback = null;
             showAnswer = false;
             mustPractice = false;
+        }
+
+        function getCurrentCard() {
+            return cards[currentIndex];
+        }
+
+        function checkAnswer() {
+            const currentCard = getCurrentCard();
+            if (!currentCard || userInput.trim() === '') return;
+
+            const inputTrimmed = userInput.trim();
+            const isCorrect = inputTrimmed === currentCard.chinese || inputTrimmed === currentCard.zhuyin;
+            
+            if (mustPractice) {
+                if (isCorrect) {
+                    feedback = 'practiced';
+                    showAnswer = true;
+                    mustPractice = false;
+                } else {
+                    feedback = 'practice-incorrect';
+                    showAnswer = true;
+                }
+            } else {
+                feedback = isCorrect ? 'correct' : 'incorrect';
+                showAnswer = true;
+
+                if (!isCorrect) {
+                    currentRoundErrors++;
+                }
+            }
+
+            render();
+        }
+
+        function handleDontKnow() {
+            currentRoundErrors++;
+            feedback = 'skipped';
+            showAnswer = true;
+            mustPractice = true;
+            render();
+        }
+
+        function tryAgain() {
+            userInput = '';
+            showAnswer = false;
+            feedback = null;
             render();
             
             setTimeout(() => {
                 const input = document.getElementById('wordInput');
                 if (input) input.focus();
             }, 0);
-        } else {
-            if (currentRoundErrors === 0) {
-                perfectRounds++;
-                if (perfectRounds >= 5) {
-                    completedGroups.add(`${phase}-${groupIndex}`);
-                    groupIndex++;
-                    perfectRounds = 0;
-                    currentRoundErrors = 0;
-                    loadCurrentGroup();
+        }
+
+        function nextCard() {
+            if (currentIndex < cards.length - 1) {
+                currentIndex++;
+                userInput = '';
+                feedback = null;
+                showAnswer = false;
+                mustPractice = false;
+                render();
+                
+                setTimeout(() => {
+                    const input = document.getElementById('wordInput');
+                    if (input) input.focus();
+                }, 0);
+            } else {
+                if (currentRoundErrors === 0) {
+                    perfectRounds++;
+                    if (perfectRounds >= 5) {
+                        completedGroups.add(`${phase}-${groupIndex}`);
+                        groupIndex++;
+                        perfectRounds = 0;
+                        currentRoundErrors = 0;
+                        loadCurrentGroup();
+                    } else {
+                        currentRoundErrors = 0;
+                        cards = shuffle(cards);
+                        currentIndex = 0;
+                        userInput = '';
+                        feedback = null;
+                        showAnswer = false;
+                        mustPractice = false;
+                    }
                 } else {
                     currentRoundErrors = 0;
+                    perfectRounds = 0;
                     cards = shuffle(cards);
                     currentIndex = 0;
                     userInput = '';
@@ -822,202 +827,190 @@
                     showAnswer = false;
                     mustPractice = false;
                 }
-            } else {
-                currentRoundErrors = 0;
-                perfectRounds = 0;
-                cards = shuffle(cards);
-                currentIndex = 0;
-                userInput = '';
-                feedback = null;
-                showAnswer = false;
-                mustPractice = false;
+                render();
+                renderMenu();
             }
+        }
+
+        function showCompletion() {
+            phase = 'complete';
+            render();
+        }
+
+        function restart() {
+            phase = 1;
+            completedGroups.clear();
+            initializePhase();
             render();
             renderMenu();
         }
-    }
 
-    function showCompletion() {
-        phase = 'complete';
-        render();
-    }
-
-    function restart() {
-        phase = 1;
-        completedGroups.clear();
-        initializePhase();
-        render();
-        renderMenu();
-    }
-
-    function getPhaseDescription() {
-        if (phase === 1) {
-            return {
-                title: 'Phase 1: Small Groups',
-                subtitle: `Learning ${cards.length} words (Group ${groupIndex + 1} of ${phase1Groups.length})`,
-                requirement: 'Complete 5 perfect rounds to advance'
-            };
-        } else if (phase === 2) {
-            return {
-                title: 'Phase 2: Medium Groups',
-                subtitle: `Reviewing ${cards.length} words (Group ${groupIndex + 1} of ${phase2Groups.length})`,
-                requirement: 'Complete 5 perfect rounds to advance'
-            };
-        } else if (phase === 3) {
-            return {
-                title: 'Phase 3: Final Review',
-                subtitle: 'All 100 words together!',
-                requirement: 'Complete 5 perfect rounds to master'
-            };
+        function getPhaseDescription() {
+            if (phase === 1) {
+                return {
+                    title: 'Phase 1: Small Groups',
+                    subtitle: `Learning ${cards.length} words (Group ${groupIndex + 1} of ${phase1Groups.length})`,
+                    requirement: 'Complete 5 perfect rounds to advance'
+                };
+            } else if (phase === 2) {
+                return {
+                    title: 'Phase 2: Medium Groups',
+                    subtitle: `Reviewing ${cards.length} words (Group ${groupIndex + 1} of ${phase2Groups.length})`,
+                    requirement: 'Complete 5 perfect rounds to advance'
+                };
+            } else if (phase === 3) {
+                return {
+                    title: 'Phase 3: Final Review',
+                    subtitle: 'All 100 words together!',
+                    requirement: 'Complete 5 perfect rounds to master'
+                };
+            }
+            return { title: '', subtitle: '', requirement: '' };
         }
-        return { title: '', subtitle: '', requirement: '' };
-    }
 
-    function render() {
-        if (phase === 'complete') {
-            document.getElementById('root').innerHTML = `
+        function render() {
+            if (phase === 'complete') {
+                document.getElementById('root').innerHTML = `
+                    <div class="container">
+                        <div class="header">
+                            <h1>🎉 恭喜! Congratulations! 🎉</h1>
+                            <p>You've mastered 100 core Taiwanese Mandarin words!</p>
+                        </div>
+                        <div class="flashcard">
+                            <div class="completion-message">
+                                <div class="completion-title">You did it!</div>
+                                <div class="completion-text">
+                                    You've successfully completed:<br><br>
+                                    ✓ Phase 1: 20 small groups (5 words each)<br>
+                                    ✓ Phase 2: 3 medium groups (~33 words each)<br>
+                                    ✓ Phase 3: All 100 words together<br><br>
+                                    5 perfect rounds each = Total mastery!
+                                </div>
+                                <button class="btn btn-green" onclick="restart()">Practice Again</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const currentCard = getCurrentCard();
+            const phaseDesc = getPhaseDescription();
+            const progressPercent = ((currentIndex + 1) / cards.length) * 100;
+
+            let answerSection = '';
+            if (!showAnswer) {
+                answerSection = `<div class="input-section">
+                    <label class="input-label">${mustPractice ? 'Now type it to practice:' : 'Type the Chinese characters or Zhuyin:'}</label>
+                    <input type="text" id="wordInput" class="word-input" placeholder="輸入..." value="${userInput}"/>
+                    <p class="input-tip">Tip: Use Chinese input or copy/paste</p>
+                </div>`;
+            } else {
+                let feedbackContent = '';
+                if (feedback === 'correct') {
+                    feedbackContent = '<div class="feedback-icon">✓</div><div class="feedback-title">Correct! 對!</div>';
+                } else if (feedback === 'incorrect') {
+                    feedbackContent = '<div class="feedback-icon">✗</div><div class="feedback-title">Incorrect</div><div class="feedback-subtitle">You typed: ' + userInput + '</div>';
+                } else if (feedback === 'skipped') {
+                    feedbackContent = '<div class="feedback-icon">📝</div><div class="feedback-title">Here\'s the answer:</div><div class="feedback-subtitle">Study it, then type it to practice!</div>';
+                } else if (feedback === 'practiced') {
+                    feedbackContent = '<div class="feedback-icon">🎉</div><div class="feedback-title">Great! You got it!</div>';
+                } else if (feedback === 'practice-incorrect') {
+                    feedbackContent = '<div class="feedback-icon">🔄</div><div class="feedback-title">Not quite, try again!</div><div class="feedback-subtitle">You typed: ' + userInput + '</div>';
+                }
+                answerSection = '<div class="feedback-box ' + feedback + '">' + feedbackContent + 
+                    '<div class="answer-display">' + currentCard.chinese + '</div>' +
+                    '<div class="answer-details">' + currentCard.zhuyin + '</div>' +
+                    '<div class="answer-details">' + currentCard.pinyin + '</div>' +
+                    '<div class="answer-meaning">' + currentCard.english + '</div></div>';
+            }
+
+            let buttonSection = '';
+            if (!showAnswer) {
+                buttonSection = '<div class="button-group">';
+                if (!mustPractice) {
+                    buttonSection += '<button class="btn btn-yellow" onclick="handleDontKnow()">I Don\'t Know</button>';
+                }
+                buttonSection += '<button class="btn btn-primary" onclick="checkAnswer()" ' + (userInput.trim() === '' ? 'disabled' : '') + '>' + (mustPractice ? 'Check Practice' : 'Check Answer') + '</button></div>';
+            } else {
+                if (mustPractice && (feedback === 'skipped' || feedback === 'practice-incorrect')) {
+                    buttonSection = '<button class="btn btn-orange btn-full" onclick="tryAgain()">' + (feedback === 'skipped' ? 'Practice Typing It' : 'Try Again') + '</button>';
+                } else {
+                    buttonSection = '<button class="btn btn-primary btn-full" onclick="nextCard()">Next Card →</button>';
+                }
+            }
+
+            const html = `
                 <div class="container">
                     <div class="header">
-                        <h1>🎉 恭喜! Congratulations! 🎉</h1>
-                        <p>You've mastered 100 core Taiwanese Mandarin words!</p>
+                        <h1>台灣華語 100 Words</h1>
+                        <p>Progressive Learning System</p>
                     </div>
-                    <div class="flashcard">
-                        <div class="completion-message">
-                            <div class="completion-title">You did it!</div>
-                            <div class="completion-text">
-                                You've successfully completed:<br><br>
-                                ✓ Phase 1: 20 small groups (5 words each)<br>
-                                ✓ Phase 2: 3 medium groups (~33 words each)<br>
-                                ✓ Phase 3: All 100 words together<br><br>
-                                5 perfect rounds each = Total mastery!
-                            </div>
-                            <button class="btn btn-green" onclick="restart()">Practice Again</button>
+                    
+                    <div class="phase-indicator">
+                        <div class="phase-title">${phaseDesc.title}</div>
+                        <div class="phase-subtitle">${phaseDesc.subtitle}</div>
+                        <div class="phase-subtitle">${phaseDesc.requirement}</div>
+                        <div class="streak-info">
+                            <div class="streak-badge">Perfect Rounds: ${perfectRounds}/5</div>
+                            <div class="streak-badge">This Round: ${currentRoundErrors === 0 ? '✓ Perfect' : '✗ ' + currentRoundErrors + ' errors'}</div>
                         </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="progress-info">
+                            <span>Card ${currentIndex + 1} of ${cards.length}</span>
+                            <span>Round Progress</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard">
+                        <div class="word-display">
+                            <div class="pinyin-text">${currentCard.pinyin}</div>
+                            <div class="english-label">${currentCard.english}</div>
+                        </div>
+                        ${answerSection}
+                        ${buttonSection}
                     </div>
                 </div>
             `;
-            return;
-        }
 
-        const currentCard = getCurrentCard();
-        const phaseDesc = getPhaseDescription();
-        const progressPercent = ((currentIndex + 1) / cards.length) * 100;
+            document.getElementById('root').innerHTML = html;
 
-        let answerSection = '';
-        if (!showAnswer) {
-            answerSection = `<div class="input-section">
-                <label class="input-label">${mustPractice ? 'Now type it to practice:' : 'Type the Chinese characters:'}</label>
-                <input type="text" id="wordInput" class="word-input" placeholder="輸入..." value="${userInput}"/>
-                <p class="input-tip">Tip: Use Chinese input or copy/paste</p>
-            </div>`;
-        } else {
-            let feedbackContent = '';
-            if (feedback === 'correct') {
-                feedbackContent = '<div class="feedback-icon">✓</div><div class="feedback-title">Correct! 對!</div>';
-            } else if (feedback === 'incorrect') {
-                feedbackContent = '<div class="feedback-icon">✗</div><div class="feedback-title">Incorrect</div><div class="feedback-subtitle">You typed: ' + userInput + '</div>';
-            } else if (feedback === 'skipped') {
-                feedbackContent = '<div class="feedback-icon">📝</div><div class="feedback-title">Here\'s the answer:</div><div class="feedback-subtitle">Study it, then type it to practice!</div>';
-            } else if (feedback === 'practiced') {
-                feedbackContent = '<div class="feedback-icon">🎉</div><div class="feedback-title">Great! You got it!</div>';
-            } else if (feedback === 'practice-incorrect') {
-                feedbackContent = '<div class="feedback-icon">🔄</div><div class="feedback-title">Not quite, try again!</div><div class="feedback-subtitle">You typed: ' + userInput + '</div>';
-            }
-            answerSection = '<div class="feedback-box ' + feedback + '">' + feedbackContent + 
-                '<div class="answer-display">' + currentCard.chinese + '</div>' +
-                '<div class="answer-details">' + currentCard.zhuyin + '</div>' +
-                '<div class="answer-details">' + currentCard.pinyin + '</div>' +
-                '<div class="answer-meaning">' + currentCard.english + '</div></div>';
-        }
-
-        let buttonSection = '';
-        if (!showAnswer) {
-            buttonSection = '<div class="button-group">';
-            if (!mustPractice) {
-                buttonSection += '<button class="btn btn-yellow" onclick="handleDontKnow()">I Don\'t Know</button>';
-            }
-            buttonSection += '<button class="btn btn-primary" onclick="checkAnswer()" ' + (userInput.trim() === '' ? 'disabled' : '') + '>' + (mustPractice ? 'Check Practice' : 'Check Answer') + '</button></div>';
-        } else {
-            if (mustPractice && (feedback === 'skipped' || feedback === 'practice-incorrect')) {
-                buttonSection = '<button class="btn btn-orange btn-full" onclick="tryAgain()">' + (feedback === 'skipped' ? 'Practice Typing It' : 'Try Again') + '</button>';
-            } else {
-                buttonSection = '<button class="btn btn-primary btn-full" onclick="nextCard()">Next Card →</button>';
-            }
-        }
-
-        const html = `
-            <div class="container">
-                <div class="header">
-                    <h1>台灣華語 100 Words</h1>
-                    <p>Progressive Learning System</p>
-                </div>
+            const input = document.getElementById('wordInput');
+            if (input) {
+                input.value = userInput;
                 
-                <div class="phase-indicator">
-                    <div class="phase-title">${phaseDesc.title}</div>
-                    <div class="phase-subtitle">${phaseDesc.subtitle}</div>
-                    <div class="phase-subtitle">${phaseDesc.requirement}</div>
-                    <div class="streak-info">
-                        <div class="streak-badge">Perfect Rounds: ${perfectRounds}/5</div>
-                        <div class="streak-badge">This Round: ${currentRoundErrors === 0 ? '✓ Perfect' : '✗ ' + currentRoundErrors + ' errors'}</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="progress-info">
-                        <span>Card ${currentIndex + 1} of ${cards.length}</span>
-                        <span>Round Progress</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${progressPercent}%"></div>
-                    </div>
-                </div>
-
-                <div class="flashcard">
-                    <div class="word-display">
-                        <div class="pinyin-text">${currentCard.pinyin}</div>
-                        <div class="english-label">${currentCard.english}</div>
-                    </div>
-                    ${answerSection}
-                    ${buttonSection}
-                </div>
-            </div>
-        `;
-
-        document.getElementById('root').innerHTML = html;
-
-        const input = document.getElementById('wordInput');
-        if (input) {
-            input.value = userInput;
-            
-            input.addEventListener('input', (e) => {
-                userInput = e.target.value;
-                const checkBtn = document.querySelector('.btn-primary');
-                if (checkBtn) {
-                    if (userInput.trim() === '') {
-                        checkBtn.disabled = true;
-                    } else {
-                        checkBtn.disabled = false;
+                input.addEventListener('input', (e) => {
+                    userInput = e.target.value;
+                    const checkBtn = document.querySelector('.btn-primary');
+                    if (checkBtn) {
+                        if (userInput.trim() === '') {
+                            checkBtn.disabled = true;
+                        } else {
+                            checkBtn.disabled = false;
+                        }
                     }
-                }
-            });
+                });
 
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !showAnswer) {
-                    checkAnswer();
-                } else if (e.key === 'Enter' && showAnswer && !mustPractice) {
-                    nextCard();
-                }
-            });
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !showAnswer) {
+                        checkAnswer();
+                    } else if (e.key === 'Enter' && showAnswer && !mustPractice) {
+                        nextCard();
+                    }
+                });
 
-            input.focus();
+                input.focus();
+            }
         }
-    }
 
-    initializePhase();
-    renderMenu();
-    render();
-</script>
-```
-
+        initializePhase();
+        renderMenu();
+        render();
+    </script>
 </body>
 </html>
