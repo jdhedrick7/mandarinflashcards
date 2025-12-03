@@ -1,1016 +1,731 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taiwanese Mandarin - 100 Core Words</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            min-height: 100vh;
-            padding: 1rem;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            color: #78350f;
-            margin-bottom: 0.5rem;
-        }
-
-        .header p {
-            color: #92400e;
-            font-size: 0.95rem;
-        }
-
-        .menu-toggle {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            background: #f59e0b;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            font-size: 0.875rem;
-        }
-
-        .menu-toggle:active {
-            background: #d97706;
-        }
-
-        .side-menu {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 320px;
-            height: 100vh;
-            background: white;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            transition: left 0.3s ease;
-            z-index: 999;
-            overflow-y: auto;
-            padding: 1rem;
-        }
-
-        .side-menu.open {
-            left: 0;
-        }
-
-        .menu-header {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #78350f;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #fcd34d;
-        }
-
-        .menu-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .menu-section-title {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #92400e;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .menu-item {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            background: #fef3c7;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-        }
-
-        .menu-item:hover:not(.locked) {
-            background: #fde68a;
-        }
-
-        .menu-item.active {
-            background: #f59e0b;
-            color: white;
-            border-color: #d97706;
-        }
-
-        .menu-item.completed {
-            background: #d1fae5;
-            border-color: #10b981;
-        }
-
-        .menu-item.locked {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .menu-item-title {
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-
-        .menu-item-subtitle {
-            font-size: 0.75rem;
-            opacity: 0.8;
-            margin-top: 0.25rem;
-        }
-
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 998;
-            display: none;
-        }
-
-        .menu-overlay.open {
-            display: block;
-        }
-
-        .phase-indicator {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .phase-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #78350f;
-            margin-bottom: 0.5rem;
-        }
-
-        .phase-subtitle {
-            color: #6b7280;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .streak-info {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .streak-badge {
-            background: #fef3c7;
-            color: #92400e;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #374151;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #e5e7eb;
-            border-radius: 9999px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #f59e0b;
-            transition: width 0.3s ease;
-        }
-
-        .flashcard {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .word-display {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .chinese-text {
-            font-size: 5rem;
-            font-weight: bold;
-            color: #78350f;
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
-        }
-
-        .pinyin-text {
-            font-size: 1.5rem;
-            color: #92400e;
-            margin-bottom: 0.5rem;
-        }
-
-        .english-label {
-            color: #6b7280;
-            font-size: 0.875rem;
-        }
-
-        .input-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .input-label {
-            display: block;
-            text-align: center;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #374151;
-            margin-bottom: 0.5rem;
-        }
-
-        .word-input {
-            width: 100%;
-            font-size: 2.5rem;
-            text-align: center;
-            border: 2px solid #fcd34d;
-            border-radius: 8px;
-            padding: 1rem;
-            outline: none;
-        }
-
-        .word-input:focus {
-            border-color: #f59e0b;
-            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
-        }
-
-        .input-tip {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #6b7280;
-            margin-top: 0.5rem;
-        }
-
-        .feedback-box {
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            border: 2px solid;
-            text-align: center;
-        }
-
-        .feedback-box.correct {
-            background: #f0fdf4;
-            border-color: #22c55e;
-        }
-
-        .feedback-box.incorrect {
-            background: #fef2f2;
-            border-color: #ef4444;
-        }
-
-        .feedback-box.skipped {
-            background: #fefce8;
-            border-color: #eab308;
-        }
-
-        .feedback-box.practiced {
-            background: #f0fdf4;
-            border-color: #22c55e;
-        }
-
-        .feedback-box.practice-incorrect {
-            background: #fff7ed;
-            border-color: #fb923c;
-        }
-
-        .feedback-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .feedback-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .feedback-box.correct .feedback-title {
-            color: #15803d;
-        }
-
-        .feedback-box.incorrect .feedback-title {
-            color: #b91c1c;
-        }
-
-        .feedback-box.skipped .feedback-title {
-            color: #a16207;
-        }
-
-        .feedback-box.practiced .feedback-title {
-            color: #15803d;
-        }
-
-        .feedback-box.practice-incorrect .feedback-title {
-            color: #ea580c;
-        }
-
-        .feedback-subtitle {
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .answer-display {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #78350f;
-            margin: 1rem 0;
-        }
-
-        .answer-details {
-            color: #92400e;
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .answer-meaning {
-            color: #4b5563;
-            font-size: 1rem;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 1rem;
-            font-size: 1rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-yellow {
-            background: #eab308;
-            color: white;
-        }
-
-        .btn-yellow:active {
-            background: #ca8a04;
-        }
-
-        .btn-primary {
-            background: #f59e0b;
-            color: white;
-        }
-
-        .btn-primary:active {
-            background: #d97706;
-        }
-
-        .btn-orange {
-            background: #f97316;
-            color: white;
-        }
-
-        .btn-orange:active {
-            background: #ea580c;
-        }
-
-        .btn-green {
-            background: #22c55e;
-            color: white;
-        }
-
-        .btn-green:active {
-            background: #16a34a;
-        }
-
-        .btn:disabled {
-            background: #d1d5db;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .btn-full {
-            width: 100%;
-        }
-
-        .completion-message {
-            text-align: center;
-        }
-
-        .completion-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #78350f;
-            margin-bottom: 1rem;
-        }
-
-        .completion-text {
-            color: #374151;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        @media (min-width: 640px) {
-            body {
-                padding: 2rem;
-            }
-
-            .header h1 {
-                font-size: 2.5rem;
-            }
-
-            .header p {
-                font-size: 1rem;
-            }
-
-            .card {
-                padding: 1.5rem;
-            }
-
-            .flashcard {
-                padding: 2.5rem;
-            }
-
-            .chinese-text {
-                font-size: 6rem;
-            }
-
-            .word-input {
-                font-size: 3rem;
-            }
-
-            .answer-display {
-                font-size: 5rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>中文 Flashcards - Learn 100 Essential Chinese Words</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+    html, body, #root {
+      height: 100%;
+      width: 100%;
+    }
+    body {
+      font-family: 'Noto Sans SC', 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    input::placeholder {
+      color: #c0b0a0;
+    }
+    input:focus {
+      border-color: #ff8b5a !important;
+      outline: none;
+    }
+    button {
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    button:disabled {
+      cursor: not-allowed;
+    }
+    /* Prevent iOS zoom on input focus */
+    input {
+      font-size: 16px !important;
+    }
+    @media (min-width: 768px) {
+      input {
+        font-size: 20px !important;
+      }
+    }
+  </style>
 </head>
 <body>
-    <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
-    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
-    <div class="side-menu" id="sideMenu"></div>
-    <div id="root"></div>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useRef, useCallback, useEffect } = React;
 
-    <script>
-        const vocabulary = [
-            { chinese: '我', pinyin: 'wǒ', zhuyin: 'ㄨㄛˇ', english: 'I, me' },
-            { chinese: '你', pinyin: 'nǐ', zhuyin: 'ㄋㄧˇ', english: 'you' },
-            { chinese: '他', pinyin: 'tā', zhuyin: 'ㄊㄚ', english: 'he, him' },
-            { chinese: '她', pinyin: 'tā', zhuyin: 'ㄊㄚ', english: 'she, her' },
-            { chinese: '我們', pinyin: 'wǒmen', zhuyin: 'ㄨㄛˇ ㄇㄣ˙', english: 'we, us' },
-            { chinese: '你們', pinyin: 'nǐmen', zhuyin: 'ㄋㄧˇ ㄇㄣ˙', english: 'you (plural)' },
-            { chinese: '他們', pinyin: 'tāmen', zhuyin: 'ㄊㄚ ㄇㄣ˙', english: 'they, them' },
-            { chinese: '這', pinyin: 'zhè', zhuyin: 'ㄓㄜˋ', english: 'this' },
-            { chinese: '那', pinyin: 'nà', zhuyin: 'ㄋㄚˋ', english: 'that' },
-            { chinese: '什麼', pinyin: 'shénme', zhuyin: 'ㄕㄣˊ ㄇㄜ˙', english: 'what' },
-            { chinese: '是', pinyin: 'shì', zhuyin: 'ㄕˋ', english: 'to be' },
-            { chinese: '有', pinyin: 'yǒu', zhuyin: 'ㄧㄡˇ', english: 'to have' },
-            { chinese: '在', pinyin: 'zài', zhuyin: 'ㄗㄞˋ', english: 'to be at/in' },
-            { chinese: '去', pinyin: 'qù', zhuyin: 'ㄑㄩˋ', english: 'to go' },
-            { chinese: '來', pinyin: 'lái', zhuyin: 'ㄌㄞˊ', english: 'to come' },
-            { chinese: '吃', pinyin: 'chī', zhuyin: 'ㄔ', english: 'to eat' },
-            { chinese: '喝', pinyin: 'hē', zhuyin: 'ㄏㄜ', english: 'to drink' },
-            { chinese: '看', pinyin: 'kàn', zhuyin: 'ㄎㄢˋ', english: 'to look, watch' },
-            { chinese: '說', pinyin: 'shuō', zhuyin: 'ㄕㄨㄛ', english: 'to say, speak' },
-            { chinese: '做', pinyin: 'zuò', zhuyin: 'ㄗㄨㄛˋ', english: 'to do, make' },
-            { chinese: '買', pinyin: 'mǎi', zhuyin: 'ㄇㄞˇ', english: 'to buy' },
-            { chinese: '賣', pinyin: 'mài', zhuyin: 'ㄇㄞˋ', english: 'to sell' },
-            { chinese: '要', pinyin: 'yào', zhuyin: 'ㄧㄠˋ', english: 'to want' },
-            { chinese: '給', pinyin: 'gěi', zhuyin: 'ㄍㄟˇ', english: 'to give' },
-            { chinese: '想', pinyin: 'xiǎng', zhuyin: 'ㄒㄧㄤˇ', english: 'to think, want' },
-            { chinese: '一', pinyin: 'yī', zhuyin: 'ㄧ', english: 'one' },
-            { chinese: '二', pinyin: 'èr', zhuyin: 'ㄦˋ', english: 'two' },
-            { chinese: '三', pinyin: 'sān', zhuyin: 'ㄙㄢ', english: 'three' },
-            { chinese: '四', pinyin: 'sì', zhuyin: 'ㄙˋ', english: 'four' },
-            { chinese: '五', pinyin: 'wǔ', zhuyin: 'ㄨˇ', english: 'five' },
-            { chinese: '六', pinyin: 'liù', zhuyin: 'ㄌㄧㄡˋ', english: 'six' },
-            { chinese: '七', pinyin: 'qī', zhuyin: 'ㄑㄧ', english: 'seven' },
-            { chinese: '八', pinyin: 'bā', zhuyin: 'ㄅㄚ', english: 'eight' },
-            { chinese: '九', pinyin: 'jiǔ', zhuyin: 'ㄐㄧㄡˇ', english: 'nine' },
-            { chinese: '十', pinyin: 'shí', zhuyin: 'ㄕˊ', english: 'ten' },
-            { chinese: '好', pinyin: 'hǎo', zhuyin: 'ㄏㄠˇ', english: 'good' },
-            { chinese: '大', pinyin: 'dà', zhuyin: 'ㄉㄚˋ', english: 'big' },
-            { chinese: '小', pinyin: 'xiǎo', zhuyin: 'ㄒㄧㄠˇ', english: 'small' },
-            { chinese: '多', pinyin: 'duō', zhuyin: 'ㄉㄨㄛ', english: 'many, much' },
-            { chinese: '少', pinyin: 'shǎo', zhuyin: 'ㄕㄠˇ', english: 'few, little' },
-            { chinese: '新', pinyin: 'xīn', zhuyin: 'ㄒㄧㄣ', english: 'new' },
-            { chinese: '舊', pinyin: 'jiù', zhuyin: 'ㄐㄧㄡˋ', english: 'old (things)' },
-            { chinese: '老', pinyin: 'lǎo', zhuyin: 'ㄌㄠˇ', english: 'old (people)' },
-            { chinese: '貴', pinyin: 'guì', zhuyin: 'ㄍㄨㄟˋ', english: 'expensive' },
-            { chinese: '便宜', pinyin: 'piányi', zhuyin: 'ㄆㄧㄢˊ ㄧ˙', english: 'cheap' },
-            { chinese: '今天', pinyin: 'jīntiān', zhuyin: 'ㄐㄧㄣ ㄊㄧㄢ', english: 'today' },
-            { chinese: '明天', pinyin: 'míngtiān', zhuyin: 'ㄇㄧㄥˊ ㄊㄧㄢ', english: 'tomorrow' },
-            { chinese: '昨天', pinyin: 'zuótiān', zhuyin: 'ㄗㄨㄛˊ ㄊㄧㄢ', english: 'yesterday' },
-            { chinese: '現在', pinyin: 'xiànzài', zhuyin: 'ㄒㄧㄢˋ ㄗㄞˋ', english: 'now' },
-            { chinese: '時候', pinyin: 'shíhou', zhuyin: 'ㄕˊ ㄏㄡ˙', english: 'time, moment' },
-            { chinese: '年', pinyin: 'nián', zhuyin: 'ㄋㄧㄢˊ', english: 'year' },
-            { chinese: '月', pinyin: 'yuè', zhuyin: 'ㄩㄝˋ', english: 'month' },
-            { chinese: '日', pinyin: 'rì', zhuyin: 'ㄖˋ', english: 'day, sun' },
-            { chinese: '早上', pinyin: 'zǎoshang', zhuyin: 'ㄗㄠˇ ㄕㄤ˙', english: 'morning' },
-            { chinese: '晚上', pinyin: 'wǎnshang', zhuyin: 'ㄨㄢˇ ㄕㄤ˙', english: 'evening' },
-            { chinese: '家', pinyin: 'jiā', zhuyin: 'ㄐㄧㄚ', english: 'home, family' },
-            { chinese: '學校', pinyin: 'xuéxiào', zhuyin: 'ㄒㄩㄝˊ ㄒㄧㄠˋ', english: 'school' },
-            { chinese: '公司', pinyin: 'gōngsī', zhuyin: 'ㄍㄨㄥ ㄙ', english: 'company' },
-            { chinese: '店', pinyin: 'diàn', zhuyin: 'ㄉㄧㄢˋ', english: 'shop, store' },
-            { chinese: '飯店', pinyin: 'fàndiàn', zhuyin: 'ㄈㄢˋ ㄉㄧㄢˋ', english: 'restaurant, hotel' },
-            { chinese: '醫院', pinyin: 'yīyuàn', zhuyin: 'ㄧ ㄩㄢˋ', english: 'hospital' },
-            { chinese: '車', pinyin: 'chē', zhuyin: 'ㄔㄜ', english: 'car, vehicle' },
-            { chinese: '書', pinyin: 'shū', zhuyin: 'ㄕㄨ', english: 'book' },
-            { chinese: '水', pinyin: 'shuǐ', zhuyin: 'ㄕㄨㄟˇ', english: 'water' },
-            { chinese: '錢', pinyin: 'qián', zhuyin: 'ㄑㄧㄢˊ', english: 'money' },
-            { chinese: '人', pinyin: 'rén', zhuyin: 'ㄖㄣˊ', english: 'person, people' },
-            { chinese: '朋友', pinyin: 'péngyou', zhuyin: 'ㄆㄥˊ ㄧㄡ˙', english: 'friend' },
-            { chinese: '老師', pinyin: 'lǎoshī', zhuyin: 'ㄌㄠˇ ㄕ', english: 'teacher' },
-            { chinese: '學生', pinyin: 'xuésheng', zhuyin: 'ㄒㄩㄝˊ ㄕㄥ˙', english: 'student' },
-            { chinese: '爸爸', pinyin: 'bàba', zhuyin: 'ㄅㄚˋ ㄅㄚ˙', english: 'father, dad' },
-            { chinese: '媽媽', pinyin: 'māma', zhuyin: 'ㄇㄚ ㄇㄚ˙', english: 'mother, mom' },
-            { chinese: '孩子', pinyin: 'háizi', zhuyin: 'ㄏㄞˊ ㄗ˙', english: 'child' },
-            { chinese: '先生', pinyin: 'xiānsheng', zhuyin: 'ㄒㄧㄢ ㄕㄥ˙', english: 'Mr., husband' },
-            { chinese: '小姐', pinyin: 'xiǎojiě', zhuyin: 'ㄒㄧㄠˇ ㄐㄧㄝˇ', english: 'Miss, young lady' },
-            { chinese: '太太', pinyin: 'tàitai', zhuyin: 'ㄊㄞˋ ㄊㄞ˙', english: 'Mrs., wife' },
-            { chinese: '飯', pinyin: 'fàn', zhuyin: 'ㄈㄢˋ', english: 'rice, meal' },
-            { chinese: '茶', pinyin: 'chá', zhuyin: 'ㄔㄚˊ', english: 'tea' },
-            { chinese: '咖啡', pinyin: 'kāfēi', zhuyin: 'ㄎㄚ ㄈㄟ', english: 'coffee' },
-            { chinese: '菜', pinyin: 'cài', zhuyin: 'ㄘㄞˋ', english: 'dish, vegetable' },
-            { chinese: '麵', pinyin: 'miàn', zhuyin: 'ㄇㄧㄢˋ', english: 'noodles' },
-            { chinese: '不', pinyin: 'bù', zhuyin: 'ㄅㄨˋ', english: 'not, no' },
-            { chinese: '很', pinyin: 'hěn', zhuyin: 'ㄏㄣˇ', english: 'very' },
-            { chinese: '也', pinyin: 'yě', zhuyin: 'ㄧㄝˇ', english: 'also, too' },
-            { chinese: '都', pinyin: 'dōu', zhuyin: 'ㄉㄡ', english: 'all, both' },
-            { chinese: '可以', pinyin: 'kěyǐ', zhuyin: 'ㄎㄜˇ ㄧˇ', english: 'can, may' },
-            { chinese: '會', pinyin: 'huì', zhuyin: 'ㄏㄨㄟˋ', english: 'will, can, know how' },
-            { chinese: '能', pinyin: 'néng', zhuyin: 'ㄋㄥˊ', english: 'can, able to' },
-            { chinese: '知道', pinyin: 'zhīdào', zhuyin: 'ㄓ ㄉㄠˋ', english: 'to know' },
-            { chinese: '喜歡', pinyin: 'xǐhuan', zhuyin: 'ㄒㄧˇ ㄏㄨㄢ˙', english: 'to like' },
-            { chinese: '對', pinyin: 'duì', zhuyin: 'ㄉㄨㄟˋ', english: 'correct, right' },
-            { chinese: '謝謝', pinyin: 'xièxie', zhuyin: 'ㄒㄧㄝˋ ㄒㄧㄝ˙', english: 'thank you' },
-            { chinese: '請', pinyin: 'qǐng', zhuyin: 'ㄑㄧㄥˇ', english: 'please, invite' },
-            { chinese: '問', pinyin: 'wèn', zhuyin: 'ㄨㄣˋ', english: 'to ask' },
-            { chinese: '回', pinyin: 'huí', zhuyin: 'ㄏㄨㄟˊ', english: 'to return' },
-            { chinese: '裡', pinyin: 'lǐ', zhuyin: 'ㄌㄧˇ', english: 'inside, in' },
-            { chinese: '上', pinyin: 'shàng', zhuyin: 'ㄕㄤˋ', english: 'up, on, above' },
-            { chinese: '下', pinyin: 'xià', zhuyin: 'ㄒㄧㄚˋ', english: 'down, under, below' },
-            { chinese: '前', pinyin: 'qián', zhuyin: 'ㄑㄧㄢˊ', english: 'front, before' },
-            { chinese: '後', pinyin: 'hòu', zhuyin: 'ㄏㄡˋ', english: 'back, after' },
-            { chinese: '中', pinyin: 'zhōng', zhuyin: 'ㄓㄨㄥ', english: 'middle, center, China' }
-        ];
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // COMPLETE VOCABULARY DATA (100 words)
+    // ═══════════════════════════════════════════════════════════════════════════════
+    const VOCABULARY = [
+      { id: 1, chinese: '我', pinyin: 'wǒ', english: 'I; me' },
+      { id: 2, chinese: '你', pinyin: 'nǐ', english: 'you' },
+      { id: 3, chinese: '他', pinyin: 'tā', english: 'he; him' },
+      { id: 4, chinese: '她', pinyin: 'tā', english: 'she; her' },
+      { id: 5, chinese: '我们', pinyin: 'wǒmen', english: 'we; us' },
+      { id: 6, chinese: '你们', pinyin: 'nǐmen', english: 'you (plural)' },
+      { id: 7, chinese: '是', pinyin: 'shì', english: 'to be (am/is/are)' },
+      { id: 8, chinese: '有', pinyin: 'yǒu', english: 'to have; there is/are' },
+      { id: 9, chinese: '要', pinyin: 'yào', english: 'to want; going to' },
+      { id: 10, chinese: '想', pinyin: 'xiǎng', english: 'to think; to want; to miss' },
+      { id: 11, chinese: '喜欢', pinyin: 'xǐhuan', english: 'to like' },
+      { id: 12, chinese: '爱', pinyin: 'ài', english: 'to love' },
+      { id: 13, chinese: '知道', pinyin: 'zhīdao', english: 'to know' },
+      { id: 14, chinese: '觉得', pinyin: 'juéde', english: 'to feel; to think' },
+      { id: 15, chinese: '看', pinyin: 'kàn', english: 'to look; to watch' },
+      { id: 16, chinese: '听', pinyin: 'tīng', english: 'to listen' },
+      { id: 17, chinese: '说', pinyin: 'shuō', english: 'to speak; to say' },
+      { id: 18, chinese: '去', pinyin: 'qù', english: 'to go' },
+      { id: 19, chinese: '可以', pinyin: 'kěyǐ', english: 'can; may' },
+      { id: 20, chinese: '会', pinyin: 'huì', english: 'can; be able to; will' },
+      { id: 21, chinese: '给', pinyin: 'gěi', english: 'to give; for' },
+      { id: 22, chinese: '好', pinyin: 'hǎo', english: 'good' },
+      { id: 23, chinese: '漂亮', pinyin: 'piàoliang', english: 'pretty; beautiful' },
+      { id: 24, chinese: '帅', pinyin: 'shuài', english: 'handsome' },
+      { id: 25, chinese: '可爱', pinyin: "kě'ài", english: 'cute; adorable' },
+      { id: 26, chinese: '温柔', pinyin: 'wēnróu', english: 'gentle; soft (personality)' },
+      { id: 27, chinese: '甜', pinyin: 'tián', english: 'sweet' },
+      { id: 28, chinese: '浪漫', pinyin: 'làngmàn', english: 'romantic' },
+      { id: 29, chinese: '重要', pinyin: 'zhòngyào', english: 'important' },
+      { id: 30, chinese: '特别', pinyin: 'tèbié', english: 'special; especially' },
+      { id: 31, chinese: '开心', pinyin: 'kāixīn', english: 'happy (in a good mood)' },
+      { id: 32, chinese: '幸福', pinyin: 'xìngfú', english: 'happy; blessed (deep happiness)' },
+      { id: 33, chinese: '害羞', pinyin: 'hàixiū', english: 'shy' },
+      { id: 34, chinese: '累', pinyin: 'lèi', english: 'tired' },
+      { id: 35, chinese: '忙', pinyin: 'máng', english: 'busy' },
+      { id: 36, chinese: '安全', pinyin: 'ānquán', english: 'safe' },
+      { id: 37, chinese: '舒服', pinyin: 'shūfu', english: 'comfortable' },
+      { id: 38, chinese: '女朋友', pinyin: 'nǚpéngyou', english: 'girlfriend' },
+      { id: 39, chinese: '男朋友', pinyin: 'nánpéngyou', english: 'boyfriend' },
+      { id: 40, chinese: '宝贝', pinyin: 'bǎobèi', english: 'baby; darling' },
+      { id: 41, chinese: '亲爱的', pinyin: "qīn'ài de", english: 'dear; darling' },
+      { id: 42, chinese: '老公', pinyin: 'lǎogōng', english: 'husband (informal)' },
+      { id: 43, chinese: '老婆', pinyin: 'lǎopó', english: 'wife (informal)' },
+      { id: 44, chinese: '家', pinyin: 'jiā', english: 'home; family' },
+      { id: 45, chinese: '心', pinyin: 'xīn', english: 'heart' },
+      { id: 46, chinese: '身体', pinyin: 'shēntǐ', english: 'body; health' },
+      { id: 47, chinese: '眼睛', pinyin: 'yǎnjing', english: 'eyes' },
+      { id: 48, chinese: '手', pinyin: 'shǒu', english: 'hand' },
+      { id: 49, chinese: '手机', pinyin: 'shǒujī', english: 'cellphone' },
+      { id: 50, chinese: '工作', pinyin: 'gōngzuò', english: 'work; job' },
+      { id: 51, chinese: '学校', pinyin: 'xuéxiào', english: 'school' },
+      { id: 52, chinese: '电影', pinyin: 'diànyǐng', english: 'movie' },
+      { id: 53, chinese: '音乐', pinyin: 'yīnyuè', english: 'music' },
+      { id: 54, chinese: '今天', pinyin: 'jīntiān', english: 'today' },
+      { id: 55, chinese: '明天', pinyin: 'míngtiān', english: 'tomorrow' },
+      { id: 56, chinese: '现在', pinyin: 'xiànzài', english: 'now' },
+      { id: 57, chinese: '今晚', pinyin: 'jīnwǎn', english: 'tonight' },
+      { id: 58, chinese: '一直', pinyin: 'yīzhí', english: 'all the time; continuously' },
+      { id: 59, chinese: '已经', pinyin: 'yǐjīng', english: 'already' },
+      { id: 60, chinese: '还', pinyin: 'hái', english: 'still; also' },
+      { id: 61, chinese: '很', pinyin: 'hěn', english: 'very' },
+      { id: 62, chinese: '也', pinyin: 'yě', english: 'also' },
+      { id: 63, chinese: '都', pinyin: 'dōu', english: 'all; both' },
+      { id: 64, chinese: '这儿', pinyin: 'zhèr', english: 'here' },
+      { id: 65, chinese: '那儿', pinyin: 'nàr', english: 'there' },
+      { id: 66, chinese: '这里', pinyin: 'zhèlǐ', english: 'here' },
+      { id: 67, chinese: '那里', pinyin: 'nàlǐ', english: 'there' },
+      { id: 68, chinese: '一起', pinyin: 'yìqǐ', english: 'together' },
+      { id: 69, chinese: '再', pinyin: 'zài', english: 'again; more' },
+      { id: 70, chinese: '多', pinyin: 'duō', english: 'many; much; more' },
+      { id: 71, chinese: '少', pinyin: 'shǎo', english: 'few; little; less' },
+      { id: 72, chinese: '吗', pinyin: 'ma', english: 'question particle (yes/no)' },
+      { id: 73, chinese: '呢', pinyin: 'ne', english: 'question particle / "and…?"' },
+      { id: 74, chinese: '吧', pinyin: 'ba', english: 'softening/suggestion particle' },
+      { id: 75, chinese: '啊', pinyin: 'a', english: 'exclamation/ending particle' },
+      { id: 76, chinese: '的', pinyin: 'de', english: "possessive particle" },
+      { id: 77, chinese: '了', pinyin: 'le', english: 'completed action / change' },
+      { id: 78, chinese: '和', pinyin: 'hé', english: 'and; with' },
+      { id: 79, chinese: '因为', pinyin: 'yīnwèi', english: 'because' },
+      { id: 80, chinese: '所以', pinyin: 'suǒyǐ', english: 'so; therefore' },
+      { id: 81, chinese: '但是', pinyin: 'dànshì', english: 'but; however' },
+      { id: 82, chinese: '拥抱', pinyin: 'yōngbào', english: 'hug' },
+      { id: 83, chinese: '亲', pinyin: 'qīn', english: 'to kiss' },
+      { id: 84, chinese: '牵手', pinyin: 'qiānshǒu', english: 'to hold hands' },
+      { id: 85, chinese: '想你', pinyin: 'xiǎng nǐ', english: '(I) miss you' },
+      { id: 86, chinese: '抱抱', pinyin: 'bàobao', english: 'hug-hug; give me a hug' },
+      { id: 87, chinese: '亲亲', pinyin: 'qīnqin', english: 'kiss-kiss; give me a kiss' },
+      { id: 88, chinese: '见面', pinyin: 'jiànmiàn', english: 'to meet (in person)' },
+      { id: 89, chinese: '约会', pinyin: 'yuēhuì', english: 'date; to go on a date' },
+      { id: 90, chinese: '等你', pinyin: 'děng nǐ', english: 'wait for you' },
+      { id: 91, chinese: '陪你', pinyin: 'péi nǐ', english: 'keep you company; be with you' },
+      { id: 92, chinese: '想念你', pinyin: 'xiǎngniàn nǐ', english: 'miss you (deeply)' },
+      { id: 93, chinese: '照顾你', pinyin: 'zhàogu nǐ', english: 'take care of you' },
+      { id: 94, chinese: '我爱你', pinyin: 'wǒ ài nǐ', english: 'I love you' },
+      { id: 95, chinese: '我想你', pinyin: 'wǒ xiǎng nǐ', english: 'I miss you' },
+      { id: 96, chinese: '晚安', pinyin: "wǎn'ān", english: 'good night' },
+      { id: 97, chinese: '早安', pinyin: "zǎo'ān", english: 'good morning' },
+      { id: 98, chinese: '想抱你', pinyin: 'xiǎng bào nǐ', english: '(I) want to hug you' },
+      { id: 99, chinese: '想亲你', pinyin: 'xiǎng qīn nǐ', english: '(I) want to kiss you' },
+      { id: 100, chinese: '我想见你', pinyin: 'wǒ xiǎng jiàn nǐ', english: 'I want to see you' },
+    ];
 
-        const phase1Groups = [];
-        for (let i = 0; i < vocabulary.length; i += 5) {
-            phase1Groups.push(vocabulary.slice(i, i + 5));
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // PHASE STRUCTURE
+    // ═══════════════════════════════════════════════════════════════════════════════
+    const generatePhaseStructure = () => {
+      const phases = { '1': [], '1.5': [], '2': [], '3': [] };
+      for (let i = 0; i < 20; i++) {
+        phases['1'].push({ id: `1-${i + 1}`, phase: '1', groupNum: i + 1, words: VOCABULARY.slice(i * 5, (i + 1) * 5), label: `Group ${i + 1}` });
+      }
+      for (let i = 0; i < 10; i++) {
+        phases['1.5'].push({ id: `1.5-${i + 1}`, phase: '1.5', groupNum: i + 1, words: VOCABULARY.slice(i * 10, (i + 1) * 10), label: `Group ${i + 1}`, requires: [`1-${i * 2 + 1}`, `1-${i * 2 + 2}`] });
+      }
+      for (let i = 0; i < 5; i++) {
+        phases['2'].push({ id: `2-${i + 1}`, phase: '2', groupNum: i + 1, words: VOCABULARY.slice(i * 20, (i + 1) * 20), label: `Group ${i + 1}`, requires: [`1.5-${i * 2 + 1}`, `1.5-${i * 2 + 2}`] });
+      }
+      phases['3'].push({ id: '3-1', phase: '3', groupNum: 1, words: [...VOCABULARY], label: 'Final Review', requires: ['2-1', '2-2', '2-3', '2-4', '2-5'] });
+      return phases;
+    };
+
+    const PHASES = generatePhaseStructure();
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // UTILITIES
+    // ═══════════════════════════════════════════════════════════════════════════════
+    const shuffle = (array) => {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
+    const weightedShuffle = (cards, failedIds) => {
+      const failed = cards.filter(c => failedIds.has(c.id));
+      const notFailed = cards.filter(c => !failedIds.has(c.id));
+      const shuffledFailed = shuffle(failed);
+      const shuffledNotFailed = shuffle(notFailed);
+      const frontFailed = shuffledFailed.slice(0, Math.ceil(shuffledFailed.length * 0.6));
+      const backFailed = shuffledFailed.slice(Math.ceil(shuffledFailed.length * 0.6));
+      return [...frontFailed, ...shuffle([...shuffledNotFailed, ...backFailed])];
+    };
+
+    const normalizeInput = (str) => str.trim().toLowerCase().replace(/\s+/g, ' ').replace(/['\']/g, "'");
+
+    const loadFromStorage = (key, defaultValue) => {
+      try {
+        const saved = localStorage.getItem(key);
+        return saved ? JSON.parse(saved) : defaultValue;
+      } catch {
+        return defaultValue;
+      }
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // MAIN APP
+    // ═══════════════════════════════════════════════════════════════════════════════
+    function FlashcardApp() {
+      const [sidebarOpen, setSidebarOpen] = useState(false);
+      const [currentGroup, setCurrentGroup] = useState(null);
+      const [groupProgress, setGroupProgress] = useState(() => loadFromStorage('fc-progress', {}));
+      const [confidenceQueue, setConfidenceQueue] = useState(() => loadFromStorage('fc-confidence', []));
+      const [roundCards, setRoundCards] = useState([]);
+      const [currentCardIndex, setCurrentCardIndex] = useState(0);
+      const [roundErrors, setRoundErrors] = useState(0);
+      const [roundErrorIds, setRoundErrorIds] = useState(new Set());
+      const [userInput, setUserInput] = useState('');
+      const [showAnswer, setShowAnswer] = useState(false);
+      const [practiceMode, setPracticeMode] = useState(false);
+      const [feedback, setFeedback] = useState(null);
+      const [allTimeStats, setAllTimeStats] = useState(() => loadFromStorage('fc-stats', { correct: 0, total: 0 }));
+      const [currentStreak, setCurrentStreak] = useState(0);
+      const [roundStartTime, setRoundStartTime] = useState(null);
+      const [cardsAnsweredThisRound, setCardsAnsweredThisRound] = useState(0);
+      const [miniReviewPending, setMiniReviewPending] = useState(false);
+      const [masteredSinceLastReview, setMasteredSinceLastReview] = useState(0);
+      const [isMiniReview, setIsMiniReview] = useState(false);
+      const [isConfidenceReview, setIsConfidenceReview] = useState(false);
+      const [confidenceGroupId, setConfidenceGroupId] = useState(null);
+
+      const inputRef = useRef(null);
+
+      // Persistence
+      useEffect(() => {
+        localStorage.setItem('fc-progress', JSON.stringify(groupProgress));
+      }, [groupProgress]);
+
+      useEffect(() => {
+        localStorage.setItem('fc-confidence', JSON.stringify(confidenceQueue));
+      }, [confidenceQueue]);
+
+      useEffect(() => {
+        localStorage.setItem('fc-stats', JSON.stringify(allTimeStats));
+      }, [allTimeStats]);
+
+      const isGroupUnlocked = useCallback((groupId) => {
+        const [phase] = groupId.split('-');
+        if (phase === '1') return true;
+        const group = [...PHASES['1'], ...PHASES['1.5'], ...PHASES['2'], ...PHASES['3']].find(g => g.id === groupId);
+        if (!group?.requires) return true;
+        return group.requires.every(reqId => groupProgress[reqId]?.mastered);
+      }, [groupProgress]);
+
+      const getGroupStatus = useCallback((groupId) => {
+        const progress = groupProgress[groupId];
+        if (progress?.mastered) return 'mastered';
+        if (progress?.passed) return 'passed';
+        if (!isGroupUnlocked(groupId)) return 'locked';
+        if (progress?.perfectRounds > 0) return 'in-progress';
+        return 'available';
+      }, [groupProgress, isGroupUnlocked]);
+
+      const needsReview = useCallback((groupId) => {
+        const progress = groupProgress[groupId];
+        if (!progress?.lastSeen) return false;
+        const hoursSince = (Date.now() - progress.lastSeen) / (1000 * 60 * 60);
+        return hoursSince >= 24 && progress.mastered;
+      }, [groupProgress]);
+
+      const startGroup = useCallback((groupId, isConfidence = false, isMini = false) => {
+        let words;
+        let group;
+        if (isMini) {
+          const masteredGroups = Object.entries(groupProgress).filter(([, p]) => p.mastered).sort((a, b) => (b[1].lastSeen || 0) - (a[1].lastSeen || 0)).slice(0, 5);
+          const allWords = [];
+          masteredGroups.forEach(([gId]) => {
+            const g = [...PHASES['1'], ...PHASES['1.5'], ...PHASES['2'], ...PHASES['3']].find(grp => grp.id === gId);
+            if (g) allWords.push(...g.words);
+          });
+          words = shuffle(allWords).slice(0, 15);
+          if (words.length === 0) return;
+          setIsMiniReview(true);
+          setIsConfidenceReview(false);
+          setConfidenceGroupId(null);
+        } else {
+          group = [...PHASES['1'], ...PHASES['1.5'], ...PHASES['2'], ...PHASES['3']].find(g => g.id === groupId);
+          if (!group) return;
+          words = [...group.words];
+          setIsMiniReview(false);
+          setIsConfidenceReview(isConfidence);
+          setConfidenceGroupId(isConfidence ? groupId : null);
+        }
+        setCurrentGroup(isMini ? { id: 'mini-review', label: 'Mini Review', phase: '★', words } : group);
+        setRoundCards(shuffle(words));
+        setCurrentCardIndex(0);
+        setRoundErrors(0);
+        setRoundErrorIds(new Set());
+        setUserInput('');
+        setShowAnswer(false);
+        setPracticeMode(false);
+        setFeedback(null);
+        setRoundStartTime(Date.now());
+        setCardsAnsweredThisRound(0);
+        setSidebarOpen(false);
+        setTimeout(() => inputRef.current?.focus(), 100);
+      }, [groupProgress]);
+
+      const completeRound = useCallback(() => {
+        if (!currentGroup) return;
+        const errors = roundErrors;
+
+        if (isMiniReview) {
+          setMasteredSinceLastReview(0);
+          setMiniReviewPending(false);
+          setIsMiniReview(false);
+          setCurrentGroup(null);
+          return;
         }
 
-        const phase2Groups = [
-            vocabulary.slice(0, 33),
-            vocabulary.slice(33, 67),
-            vocabulary.slice(67, 100)
-        ];
-
-        const phase3Group = [vocabulary];
-
-        function shuffle(array) {
-            const newArray = [...array];
-            for (let i = newArray.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-            }
-            return newArray;
+        if (isConfidenceReview) {
+          if (errors === 0) {
+            setGroupProgress(prev => ({ ...prev, [confidenceGroupId]: { ...prev[confidenceGroupId], mastered: true, lastSeen: Date.now() } }));
+            setConfidenceQueue(prev => prev.filter(id => id !== confidenceGroupId));
+            setMasteredSinceLastReview(prev => { const newVal = prev + 1; if (newVal >= 3) setMiniReviewPending(true); return newVal; });
+          }
+          setIsConfidenceReview(false);
+          setConfidenceGroupId(null);
+          setCurrentGroup(null);
+          return;
         }
 
-        let phase = 1;
-        let groupIndex = 0;
-        let perfectRounds = 0;
-        let currentRoundErrors = 0;
-        let cards = [];
-        let currentIndex = 0;
-        let userInput = '';
-        let feedback = null;
-        let showAnswer = false;
-        let mustPractice = false;
-        let completedGroups = new Set();
+        const groupId = currentGroup.id;
+        const currentProgress = groupProgress[groupId] || { perfectRounds: 0, passed: false, mastered: false };
+        let newPerfectRounds = currentProgress.perfectRounds;
 
-        function toggleMenu() {
-            const menu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('menuOverlay');
-            menu.classList.toggle('open');
-            overlay.classList.toggle('open');
+        if (errors === 0) newPerfectRounds += 1;
+        else if (errors >= 2 && errors <= 3) newPerfectRounds = Math.max(0, newPerfectRounds - 1);
+        else if (errors >= 4) newPerfectRounds = 0;
+
+        const passed = newPerfectRounds >= 3;
+        setGroupProgress(prev => ({ ...prev, [groupId]: { ...currentProgress, perfectRounds: passed ? 3 : newPerfectRounds, passed, lastSeen: Date.now() } }));
+
+        if (passed && !currentProgress.passed) setConfidenceQueue(prev => [...prev, groupId]);
+
+        if (!passed) {
+          const nextCards = weightedShuffle(currentGroup.words, roundErrorIds);
+          setRoundCards(nextCards);
+          setCurrentCardIndex(0);
+          setRoundErrors(0);
+          setRoundErrorIds(new Set());
+          setUserInput('');
+          setShowAnswer(false);
+          setPracticeMode(false);
+          setFeedback(null);
+          setCardsAnsweredThisRound(0);
+          setRoundStartTime(Date.now());
+          setTimeout(() => inputRef.current?.focus(), 100);
+        } else {
+          setCurrentGroup(null);
+        }
+      }, [currentGroup, roundErrors, roundErrorIds, groupProgress, isMiniReview, isConfidenceReview, confidenceGroupId]);
+
+      const moveToNextCard = useCallback(() => {
+        if (currentCardIndex + 1 < roundCards.length) {
+          setCurrentCardIndex(prev => prev + 1);
+          setUserInput('');
+          setShowAnswer(false);
+          setTimeout(() => inputRef.current?.focus(), 50);
+        } else {
+          completeRound();
+        }
+      }, [currentCardIndex, roundCards.length, completeRound]);
+
+      const checkAnswer = useCallback(() => {
+        if (!currentGroup || currentCardIndex >= roundCards.length) return;
+        const card = roundCards[currentCardIndex];
+        const input = normalizeInput(userInput);
+        const correctChinese = normalizeInput(card.chinese);
+        const correctPinyin = normalizeInput(card.pinyin);
+        const isCorrect = input === correctChinese || input === correctPinyin;
+
+        if (practiceMode) {
+          if (isCorrect) {
+            setPracticeMode(false);
+            setShowAnswer(false);
+            setFeedback('correct');
+            setTimeout(() => { setFeedback(null); moveToNextCard(); }, 600);
+          } else {
+            setFeedback('incorrect');
+            setTimeout(() => setFeedback(null), 400);
+          }
+          setUserInput('');
+          return;
         }
 
-        function renderMenu() {
-            const menu = document.getElementById('sideMenu');
-            let html = '<div class="menu-header">Select Stage & Set</div>';
-
-            html += '<div class="menu-section"><div class="menu-section-title">Phase 1: Small Groups (5 words)</div>';
-            for (let i = 0; i < phase1Groups.length; i++) {
-                const isActive = phase === 1 && groupIndex === i;
-                const isCompleted = completedGroups.has(`1-${i}`);
-                const isLocked = i > 0 && !completedGroups.has(`1-${i-1}`) && !(phase === 1 && groupIndex === i);
-                html += `<div class="menu-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}" onclick="selectGroup(1, ${i})">
-                    <div class="menu-item-title">Group ${i + 1} ${isCompleted ? '✓' : ''}</div>
-                    <div class="menu-item-subtitle">${phase1Groups[i].length} words</div>
-                </div>`;
-            }
-            html += '</div>';
-
-            html += '<div class="menu-section"><div class="menu-section-title">Phase 2: Medium Groups (~33 words)</div>';
-            for (let i = 0; i < phase2Groups.length; i++) {
-                const isActive = phase === 2 && groupIndex === i;
-                const isCompleted = completedGroups.has(`2-${i}`);
-                const isLocked = (phase < 2 || (phase === 2 && groupIndex < i)) && !completedGroups.has(`2-${i}`);
-                html += `<div class="menu-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}" onclick="selectGroup(2, ${i})">
-                    <div class="menu-item-title">Group ${i + 1} ${isCompleted ? '✓' : ''}</div>
-                    <div class="menu-item-subtitle">${phase2Groups[i].length} words</div>
-                </div>`;
-            }
-            html += '</div>';
-
-            html += '<div class="menu-section"><div class="menu-section-title">Phase 3: Final Review (100 words)</div>';
-            const isActive3 = phase === 3;
-            const isCompleted3 = completedGroups.has('3-0');
-            const isLocked3 = phase < 3 && !completedGroups.has('3-0');
-            html += `<div class="menu-item ${isActive3 ? 'active' : ''} ${isCompleted3 ? 'completed' : ''} ${isLocked3 ? 'locked' : ''}" onclick="selectGroup(3, 0)">
-                <div class="menu-item-title">All 100 Words ${isCompleted3 ? '✓' : ''}</div>
-                <div class="menu-item-subtitle">Final mastery test</div>
-            </div></div>`;
-
-            menu.innerHTML = html;
+        if (isCorrect) {
+          setAllTimeStats(prev => ({ correct: prev.correct + 1, total: prev.total + 1 }));
+          setCurrentStreak(prev => prev + 1);
+          setCardsAnsweredThisRound(prev => prev + 1);
+          setFeedback('correct');
+          setTimeout(() => { setFeedback(null); moveToNextCard(); }, 600);
+        } else {
+          setAllTimeStats(prev => ({ ...prev, total: prev.total + 1 }));
+          setCurrentStreak(0);
+          setRoundErrors(prev => prev + 1);
+          setRoundErrorIds(prev => new Set([...prev, card.id]));
+          setFeedback('incorrect');
         }
+        setUserInput('');
+      }, [currentGroup, currentCardIndex, roundCards, userInput, practiceMode, moveToNextCard]);
 
-        function selectGroup(newPhase, newGroupIndex) {
-            const isLocked = (newPhase > phase) || (newPhase === phase && newGroupIndex > groupIndex);
-            if (isLocked && !completedGroups.has(`${newPhase}-${newGroupIndex}`)) {
-                return;
-            }
+      const handleDontKnow = useCallback(() => {
+        if (!currentGroup || currentCardIndex >= roundCards.length) return;
+        const card = roundCards[currentCardIndex];
+        setAllTimeStats(prev => ({ ...prev, total: prev.total + 1 }));
+        setCurrentStreak(0);
+        setRoundErrors(prev => prev + 1);
+        setRoundErrorIds(prev => new Set([...prev, card.id]));
+        setShowAnswer(true);
+        setPracticeMode(true);
+        setUserInput('');
+        setTimeout(() => inputRef.current?.focus(), 100);
+      }, [currentGroup, currentCardIndex, roundCards]);
 
-            phase = newPhase;
-            groupIndex = newGroupIndex;
-            perfectRounds = 0;
-            currentRoundErrors = 0;
-            loadCurrentGroup();
-            toggleMenu();
+      const handleKeyDown = useCallback((e) => {
+        if (e.key === 'Enter') { e.preventDefault(); if (userInput.trim()) checkAnswer(); }
+      }, [userInput, checkAnswer]);
+
+      const resetProgress = () => {
+        if (window.confirm('Reset all progress? This cannot be undone.')) {
+          setGroupProgress({});
+          setConfidenceQueue([]);
+          setAllTimeStats({ correct: 0, total: 0 });
+          setCurrentGroup(null);
+          setCurrentStreak(0);
+          localStorage.removeItem('fc-progress');
+          localStorage.removeItem('fc-confidence');
+          localStorage.removeItem('fc-stats');
         }
+      };
 
-        function initializePhase() {
-            groupIndex = 0;
-            perfectRounds = 0;
-            currentRoundErrors = 0;
-            loadCurrentGroup();
-        }
+      const accuracy = allTimeStats.total > 0 ? Math.round((allTimeStats.correct / allTimeStats.total) * 100) : 100;
+      const currentCard = roundCards[currentCardIndex];
+      const currentPerfectRounds = currentGroup && !isMiniReview && !isConfidenceReview ? (groupProgress[currentGroup.id]?.perfectRounds || 0) : 0;
+      const estimatedTimeRemaining = roundStartTime && cardsAnsweredThisRound > 0 ? Math.round(((Date.now() - roundStartTime) / cardsAnsweredThisRound) * (roundCards.length - currentCardIndex) / 1000) : null;
 
-        function loadCurrentGroup() {
-            let groups;
-            if (phase === 1) groups = phase1Groups;
-            else if (phase === 2) groups = phase2Groups;
-            else groups = phase3Group;
+      const styles = {
+        container: {
+          minHeight: '100vh',
+          background: 'linear-gradient(145deg, #fef6e4 0%, #f9e4d4 50%, #fce8d5 100%)',
+          position: 'relative',
+          overflow: 'hidden',
+        },
+        bgDecor1: {
+          position: 'fixed',
+          top: '-20%',
+          right: '-10%',
+          width: '50%',
+          height: '60%',
+          background: 'radial-gradient(ellipse, rgba(255,182,147,0.3) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        },
+        bgDecor2: {
+          position: 'fixed',
+          bottom: '-10%',
+          left: '-10%',
+          width: '40%',
+          height: '50%',
+          background: 'radial-gradient(ellipse, rgba(255,214,186,0.4) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        },
+        header: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '16px 20px',
+          background: 'rgba(255,255,255,0.7)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(0,0,0,0.05)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+        },
+        menuBtn: {
+          width: '48px',
+          height: '48px',
+          borderRadius: '12px',
+          background: sidebarOpen ? '#ff8b5a' : 'white',
+          color: sidebarOpen ? 'white' : '#5a4a3f',
+          fontSize: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        },
+        sidebar: {
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '300px',
+          height: '100vh',
+          background: 'white',
+          boxShadow: '4px 0 20px rgba(0,0,0,0.1)',
+          transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+          transition: 'transform 0.3s ease',
+          zIndex: 200,
+          overflowY: 'auto',
+          padding: '20px',
+        },
+        overlay: {
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0,0,0,0.3)',
+          zIndex: 150,
+        },
+        main: {
+          padding: '20px',
+          maxWidth: '500px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 1,
+        },
+        card: {
+          background: 'white',
+          borderRadius: '24px',
+          padding: '32px 24px',
+          marginBottom: '16px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+          transform: feedback === 'correct' ? 'scale(1.02)' : feedback === 'incorrect' ? 'translateX(4px)' : 'scale(1)',
+          transition: 'transform 0.15s ease',
+          borderLeft: feedback === 'correct' ? '4px solid #22c55e' : feedback === 'incorrect' ? '4px solid #ef4444' : 'none',
+        },
+      };
 
-            if (groupIndex >= groups.length) {
-                if (phase === 3) {
-                    showCompletion();
-                    return;
-                } else {
-                    phase++;
-                    initializePhase();
-                    return;
-                }
-            }
+      return (
+        <div style={styles.container}>
+          <div style={styles.bgDecor1} />
+          <div style={styles.bgDecor2} />
 
-            cards = shuffle(groups[groupIndex]);
-            currentIndex = 0;
-            userInput = '';
-            feedback = null;
-            showAnswer = false;
-            mustPractice = false;
-        }
+          {/* Header */}
+          <header style={styles.header}>
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} style={styles.menuBtn}>☰</button>
+            <div style={{ textAlign: 'center' }}>
+              <h1 style={{ fontSize: '18px', fontWeight: '700', color: '#5a4a3f', margin: 0 }}>中文 Flashcards</h1>
+              <p style={{ fontSize: '12px', color: '#8a7a6f', margin: '2px 0 0 0' }}>{accuracy}% accuracy • {currentStreak} streak 🔥</p>
+            </div>
+            <div style={{ width: '48px' }} />
+          </header>
 
-        function getCurrentCard() {
-            return cards[currentIndex];
-        }
+          {/* Sidebar */}
+          <div style={styles.sidebar}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h2 style={{ margin: 0, color: '#5a4a3f', fontSize: '20px' }}>Phases</h2>
+              <button onClick={() => setSidebarOpen(false)} style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#f5f0eb', color: '#5a4a3f', fontSize: '18px' }}>×</button>
+            </div>
 
-        function checkAnswer() {
-            const currentCard = getCurrentCard();
-            if (!currentCard || userInput.trim() === '') return;
+            {confidenceQueue.length > 0 && (
+              <div style={{ background: 'linear-gradient(135deg, #fff3e6, #ffe8d6)', borderRadius: '12px', padding: '12px', marginBottom: '16px', border: '2px solid #ffb366' }}>
+                <h3 style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#cc6600' }}>⏰ Confidence Review ({confidenceQueue.length})</h3>
+                {confidenceQueue.slice(0, 3).map(gId => {
+                  const g = [...PHASES['1'], ...PHASES['1.5'], ...PHASES['2'], ...PHASES['3']].find(gr => gr.id === gId);
+                  return <button key={gId} onClick={() => startGroup(gId, true)} style={{ display: 'block', width: '100%', padding: '8px 12px', marginTop: '6px', borderRadius: '8px', background: 'white', color: '#cc6600', fontSize: '13px', textAlign: 'left' }}>Phase {g?.phase} - {g?.label}</button>;
+                })}
+              </div>
+            )}
 
-            const inputTrimmed = userInput.trim();
-            const isCorrect = inputTrimmed === currentCard.chinese || inputTrimmed === currentCard.zhuyin;
-            
-            if (mustPractice) {
-                if (isCorrect) {
-                    feedback = 'practiced';
-                    showAnswer = true;
-                    mustPractice = false;
-                } else {
-                    feedback = 'practice-incorrect';
-                    showAnswer = true;
-                }
-            } else {
-                feedback = isCorrect ? 'correct' : 'incorrect';
-                showAnswer = true;
+            {miniReviewPending && (
+              <button onClick={() => startGroup(null, false, true)} style={{ display: 'block', width: '100%', padding: '14px', marginBottom: '16px', borderRadius: '12px', background: 'linear-gradient(135deg, #a855f7, #7c3aed)', color: 'white', fontSize: '14px', fontWeight: '600' }}>⚡ Mini Review Ready!</button>
+            )}
 
-                if (!isCorrect) {
-                    currentRoundErrors++;
-                }
-            }
-
-            render();
-        }
-
-        function handleDontKnow() {
-            currentRoundErrors++;
-            feedback = 'skipped';
-            showAnswer = true;
-            mustPractice = true;
-            render();
-        }
-
-        function tryAgain() {
-            userInput = '';
-            showAnswer = false;
-            feedback = null;
-            render();
-            
-            setTimeout(() => {
-                const input = document.getElementById('wordInput');
-                if (input) input.focus();
-            }, 0);
-        }
-
-        function nextCard() {
-            if (currentIndex < cards.length - 1) {
-                currentIndex++;
-                userInput = '';
-                feedback = null;
-                showAnswer = false;
-                mustPractice = false;
-                render();
-                
-                setTimeout(() => {
-                    const input = document.getElementById('wordInput');
-                    if (input) input.focus();
-                }, 0);
-            } else {
-                if (currentRoundErrors === 0) {
-                    perfectRounds++;
-                    if (perfectRounds >= 5) {
-                        completedGroups.add(`${phase}-${groupIndex}`);
-                        groupIndex++;
-                        perfectRounds = 0;
-                        currentRoundErrors = 0;
-                        loadCurrentGroup();
-                    } else {
-                        currentRoundErrors = 0;
-                        cards = shuffle(cards);
-                        currentIndex = 0;
-                        userInput = '';
-                        feedback = null;
-                        showAnswer = false;
-                        mustPractice = false;
-                    }
-                } else {
-                    currentRoundErrors = 0;
-                    perfectRounds = 0;
-                    cards = shuffle(cards);
-                    currentIndex = 0;
-                    userInput = '';
-                    feedback = null;
-                    showAnswer = false;
-                    mustPractice = false;
-                }
-                render();
-                renderMenu();
-            }
-        }
-
-        function showCompletion() {
-            phase = 'complete';
-            render();
-        }
-
-        function restart() {
-            phase = 1;
-            completedGroups.clear();
-            initializePhase();
-            render();
-            renderMenu();
-        }
-
-        function getPhaseDescription() {
-            if (phase === 1) {
-                return {
-                    title: 'Phase 1: Small Groups',
-                    subtitle: `Learning ${cards.length} words (Group ${groupIndex + 1} of ${phase1Groups.length})`,
-                    requirement: 'Complete 5 perfect rounds to advance'
-                };
-            } else if (phase === 2) {
-                return {
-                    title: 'Phase 2: Medium Groups',
-                    subtitle: `Reviewing ${cards.length} words (Group ${groupIndex + 1} of ${phase2Groups.length})`,
-                    requirement: 'Complete 5 perfect rounds to advance'
-                };
-            } else if (phase === 3) {
-                return {
-                    title: 'Phase 3: Final Review',
-                    subtitle: 'All 100 words together!',
-                    requirement: 'Complete 5 perfect rounds to master'
-                };
-            }
-            return { title: '', subtitle: '', requirement: '' };
-        }
-
-        function render() {
-            if (phase === 'complete') {
-                document.getElementById('root').innerHTML = `
-                    <div class="container">
-                        <div class="header">
-                            <h1>🎉 恭喜! Congratulations! 🎉</h1>
-                            <p>You've mastered 100 core Taiwanese Mandarin words!</p>
-                        </div>
-                        <div class="flashcard">
-                            <div class="completion-message">
-                                <div class="completion-title">You did it!</div>
-                                <div class="completion-text">
-                                    You've successfully completed:<br><br>
-                                    ✓ Phase 1: 20 small groups (5 words each)<br>
-                                    ✓ Phase 2: 3 medium groups (~33 words each)<br>
-                                    ✓ Phase 3: All 100 words together<br><br>
-                                    5 perfect rounds each = Total mastery!
-                                </div>
-                                <button class="btn btn-green" onclick="restart()">Practice Again</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            const currentCard = getCurrentCard();
-            const phaseDesc = getPhaseDescription();
-            const progressPercent = ((currentIndex + 1) / cards.length) * 100;
-
-            let answerSection = '';
-            if (!showAnswer) {
-                answerSection = `<div class="input-section">
-                    <label class="input-label">${mustPractice ? 'Now type it to practice:' : 'Type the Chinese characters or Zhuyin:'}</label>
-                    <input type="text" id="wordInput" class="word-input" placeholder="輸入..." value="${userInput}"/>
-                    <p class="input-tip">Tip: Use Chinese input or copy/paste</p>
-                </div>`;
-            } else {
-                let feedbackContent = '';
-                if (feedback === 'correct') {
-                    feedbackContent = '<div class="feedback-icon">✓</div><div class="feedback-title">Correct! 對!</div>';
-                } else if (feedback === 'incorrect') {
-                    feedbackContent = '<div class="feedback-icon">✗</div><div class="feedback-title">Incorrect</div><div class="feedback-subtitle">You typed: ' + userInput + '</div>';
-                } else if (feedback === 'skipped') {
-                    feedbackContent = '<div class="feedback-icon">📝</div><div class="feedback-title">Here\'s the answer:</div><div class="feedback-subtitle">Study it, then type it to practice!</div>';
-                } else if (feedback === 'practiced') {
-                    feedbackContent = '<div class="feedback-icon">🎉</div><div class="feedback-title">Great! You got it!</div>';
-                } else if (feedback === 'practice-incorrect') {
-                    feedbackContent = '<div class="feedback-icon">🔄</div><div class="feedback-title">Not quite, try again!</div><div class="feedback-subtitle">You typed: ' + userInput + '</div>';
-                }
-                answerSection = '<div class="feedback-box ' + feedback + '">' + feedbackContent + 
-                    '<div class="answer-display">' + currentCard.chinese + '</div>' +
-                    '<div class="answer-details">' + currentCard.zhuyin + '</div>' +
-                    '<div class="answer-details">' + currentCard.pinyin + '</div>' +
-                    '<div class="answer-meaning">' + currentCard.english + '</div></div>';
-            }
-
-            let buttonSection = '';
-            if (!showAnswer) {
-                buttonSection = '<div class="button-group">';
-                if (!mustPractice) {
-                    buttonSection += '<button class="btn btn-yellow" onclick="handleDontKnow()">I Don\'t Know</button>';
-                }
-                buttonSection += '<button class="btn btn-primary" onclick="checkAnswer()" ' + (userInput.trim() === '' ? 'disabled' : '') + '>' + (mustPractice ? 'Check Practice' : 'Check Answer') + '</button></div>';
-            } else {
-                if (mustPractice && (feedback === 'skipped' || feedback === 'practice-incorrect')) {
-                    buttonSection = '<button class="btn btn-orange btn-full" onclick="tryAgain()">' + (feedback === 'skipped' ? 'Practice Typing It' : 'Try Again') + '</button>';
-                } else {
-                    buttonSection = '<button class="btn btn-primary btn-full" onclick="nextCard()">Next Card →</button>';
-                }
-            }
-
-            const html = `
-                <div class="container">
-                    <div class="header">
-                        <h1>台灣華語 100 Words</h1>
-                        <p>Progressive Learning System</p>
-                    </div>
-                    
-                    <div class="phase-indicator">
-                        <div class="phase-title">${phaseDesc.title}</div>
-                        <div class="phase-subtitle">${phaseDesc.subtitle}</div>
-                        <div class="phase-subtitle">${phaseDesc.requirement}</div>
-                        <div class="streak-info">
-                            <div class="streak-badge">Perfect Rounds: ${perfectRounds}/5</div>
-                            <div class="streak-badge">This Round: ${currentRoundErrors === 0 ? '✓ Perfect' : '✗ ' + currentRoundErrors + ' errors'}</div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="progress-info">
-                            <span>Card ${currentIndex + 1} of ${cards.length}</span>
-                            <span>Round Progress</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${progressPercent}%"></div>
-                        </div>
-                    </div>
-
-                    <div class="flashcard">
-                        <div class="word-display">
-                            <div class="pinyin-text">${currentCard.pinyin}</div>
-                            <div class="english-label">${currentCard.english}</div>
-                        </div>
-                        ${answerSection}
-                        ${buttonSection}
-                    </div>
+            {['1', '1.5', '2', '3'].map(phaseKey => (
+              <div key={phaseKey} style={{ marginBottom: '20px' }}>
+                <h3 style={{ fontSize: '13px', fontWeight: '700', color: '#8a7a6f', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 10px 0' }}>
+                  Phase {phaseKey} <span style={{ marginLeft: '8px', fontWeight: '400', fontSize: '11px' }}>({phaseKey === '1' ? '5 words' : phaseKey === '1.5' ? '10 words' : phaseKey === '2' ? '20 words' : '100 words'})</span>
+                </h3>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {PHASES[phaseKey].map(group => {
+                    const status = getGroupStatus(group.id);
+                    const review = needsReview(group.id);
+                    const progress = groupProgress[group.id];
+                    return (
+                      <button key={group.id} onClick={() => status !== 'locked' && startGroup(group.id)} disabled={status === 'locked'} style={{
+                        position: 'relative',
+                        minWidth: '60px',
+                        padding: '10px 12px',
+                        borderRadius: '10px',
+                        background: status === 'mastered' ? 'linear-gradient(135deg, #22c55e, #16a34a)' : status === 'passed' ? 'linear-gradient(135deg, #60a5fa, #3b82f6)' : status === 'in-progress' ? 'linear-gradient(135deg, #ff8b5a, #f97316)' : status === 'available' ? 'white' : '#e5e5e5',
+                        color: status === 'locked' ? '#a0a0a0' : status === 'available' ? '#5a4a3f' : 'white',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        boxShadow: status === 'available' ? '0 2px 6px rgba(0,0,0,0.1)' : 'none',
+                        opacity: status === 'locked' ? 0.5 : 1,
+                      }}>
+                        {status === 'mastered' && '✓ '}{group.groupNum}
+                        {progress?.perfectRounds > 0 && status !== 'mastered' && status !== 'passed' && <span style={{ marginLeft: '4px', fontSize: '10px' }}>({progress.perfectRounds}/3)</span>}
+                        {review && <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444' }} />}
+                      </button>
+                    );
+                  })}
                 </div>
-            `;
+              </div>
+            ))}
 
-            document.getElementById('root').innerHTML = html;
+            <button onClick={resetProgress} style={{ width: '100%', padding: '12px', marginTop: '20px', borderRadius: '10px', border: '1px solid #ef4444', background: 'transparent', color: '#ef4444', fontSize: '13px' }}>Reset All Progress</button>
+          </div>
 
-            const input = document.getElementById('wordInput');
-            if (input) {
-                input.value = userInput;
-                
-                input.addEventListener('input', (e) => {
-                    userInput = e.target.value;
-                    const checkBtn = document.querySelector('.btn-primary');
-                    if (checkBtn) {
-                        if (userInput.trim() === '') {
-                            checkBtn.disabled = true;
-                        } else {
-                            checkBtn.disabled = false;
-                        }
-                    }
-                });
+          {sidebarOpen && <div onClick={() => setSidebarOpen(false)} style={styles.overlay} />}
 
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter' && !showAnswer) {
-                        checkAnswer();
-                    } else if (e.key === 'Enter' && showAnswer && !mustPractice) {
-                        nextCard();
-                    }
-                });
+          {/* Main Content */}
+          <main style={styles.main}>
+            {!currentGroup ? (
+              <div style={{ textAlign: 'center', paddingTop: '40px' }}>
+                <div style={{ fontSize: '72px', marginBottom: '16px' }}>🀄</div>
+                <h2 style={{ fontSize: '24px', color: '#5a4a3f', marginBottom: '8px' }}>Ready to learn?</h2>
+                <p style={{ color: '#8a7a6f', marginBottom: '32px', lineHeight: '1.6' }}>100 essential Chinese words & phrases<br />Perfect for everyday conversation 💕</p>
 
-                input.focus();
-            }
-        }
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '32px' }}>
+                  <div style={{ background: 'white', borderRadius: '16px', padding: '20px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+                    <div style={{ fontSize: '28px', fontWeight: '700', color: '#ff8b5a' }}>{Object.values(groupProgress).filter(p => p.mastered).length}</div>
+                    <div style={{ fontSize: '12px', color: '#8a7a6f' }}>Groups Mastered</div>
+                  </div>
+                  <div style={{ background: 'white', borderRadius: '16px', padding: '20px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+                    <div style={{ fontSize: '28px', fontWeight: '700', color: '#22c55e' }}>{accuracy}%</div>
+                    <div style={{ fontSize: '12px', color: '#8a7a6f' }}>Accuracy</div>
+                  </div>
+                </div>
 
-        initializePhase();
-        renderMenu();
-        render();
-    </script>
+                {confidenceQueue.length > 0 && <button onClick={() => startGroup(confidenceQueue[0], true)} style={{ width: '100%', padding: '18px', marginBottom: '12px', borderRadius: '16px', background: 'linear-gradient(135deg, #ff8b5a, #f97316)', color: 'white', fontSize: '16px', fontWeight: '600', boxShadow: '0 4px 16px rgba(255,139,90,0.4)' }}>⏰ Confidence Review Waiting</button>}
+                {miniReviewPending && <button onClick={() => startGroup(null, false, true)} style={{ width: '100%', padding: '18px', marginBottom: '12px', borderRadius: '16px', background: 'linear-gradient(135deg, #a855f7, #7c3aed)', color: 'white', fontSize: '16px', fontWeight: '600', boxShadow: '0 4px 16px rgba(168,85,247,0.4)' }}>⚡ Mini Review Ready!</button>}
+                <button onClick={() => setSidebarOpen(true)} style={{ width: '100%', padding: '18px', borderRadius: '16px', background: 'white', color: '#5a4a3f', fontSize: '16px', fontWeight: '600', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>📚 Choose a Group</button>
+              </div>
+            ) : (
+              <div>
+                {/* Progress Header */}
+                <div style={{ background: 'white', borderRadius: '16px', padding: '16px', marginBottom: '16px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '14px', fontWeight: '600', color: '#5a4a3f' }}>{isMiniReview ? '⚡ Mini Review' : isConfidenceReview ? '⏰ Confidence Review' : `Phase ${currentGroup.phase} - ${currentGroup.label}`}</span>
+                    <span style={{ fontSize: '12px', color: '#8a7a6f' }}>{currentCardIndex + 1} / {roundCards.length}</span>
+                  </div>
+                  <div style={{ height: '8px', background: '#f0e6dc', borderRadius: '4px', overflow: 'hidden', marginBottom: '12px' }}>
+                    <div style={{ height: '100%', width: `${(currentCardIndex / roundCards.length) * 100}%`, background: 'linear-gradient(90deg, #ff8b5a, #f97316)', borderRadius: '4px', transition: 'width 0.3s ease' }} />
+                  </div>
+                  {!isMiniReview && !isConfidenceReview && (
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <span style={{ fontSize: '11px', color: '#8a7a6f' }}>Perfect rounds:</span>
+                      {[0, 1, 2].map(i => (
+                        <div key={i} style={{ width: '24px', height: '24px', borderRadius: '6px', background: i < currentPerfectRounds ? '#22c55e' : '#e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px' }}>{i < currentPerfectRounds && '✓'}</div>
+                      ))}
+                      <span style={{ fontSize: '11px', color: '#ef4444', marginLeft: 'auto' }}>{roundErrors > 0 && `${roundErrors} error${roundErrors > 1 ? 's' : ''}`}</span>
+                    </div>
+                  )}
+                  {estimatedTimeRemaining !== null && estimatedTimeRemaining > 0 && <div style={{ fontSize: '11px', color: '#8a7a6f', marginTop: '8px' }}>~{Math.ceil(estimatedTimeRemaining / 60)} min remaining</div>}
+                </div>
+
+                {/* Flashcard */}
+                <div style={styles.card}>
+                  {feedback && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: feedback === 'correct' ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)', pointerEvents: 'none' }} />}
+                  <div style={{ fontSize: '14px', color: '#8a7a6f', marginBottom: '8px' }}>What is...</div>
+                  <div style={{ fontSize: '24px', fontWeight: '600', color: '#5a4a3f', marginBottom: '24px' }}>{currentCard?.english}</div>
+
+                  {showAnswer && (
+                    <div style={{ background: 'linear-gradient(135deg, #fff3e6, #ffe8d6)', borderRadius: '16px', padding: '20px', marginBottom: '20px' }}>
+                      <div style={{ fontSize: '48px', fontWeight: '700', color: '#5a4a3f', marginBottom: '8px' }}>{currentCard?.chinese}</div>
+                      <div style={{ fontSize: '20px', color: '#ff8b5a', marginBottom: '4px' }}>{currentCard?.pinyin}</div>
+                      <div style={{ fontSize: '12px', color: '#8a7a6f', marginTop: '12px' }}>Type the Chinese or Pinyin below to continue</div>
+                    </div>
+                  )}
+
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder={practiceMode ? "Type to practice..." : "Type Chinese or Pinyin..."}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck="false"
+                    style={{
+                      width: '100%',
+                      padding: '16px 20px',
+                      fontSize: '20px',
+                      borderRadius: '12px',
+                      border: `2px solid ${feedback === 'correct' ? '#22c55e' : feedback === 'incorrect' ? '#ef4444' : '#e5e5e5'}`,
+                      textAlign: 'center',
+                      background: practiceMode ? '#fff9f5' : 'white',
+                      transition: 'border-color 0.2s ease',
+                    }}
+                  />
+                </div>
+
+                {/* Action Buttons */}
+                <div style={{ display: 'grid', gridTemplateColumns: showAnswer ? '1fr' : '1fr 1fr', gap: '12px' }}>
+                  {!showAnswer && <button onClick={handleDontKnow} style={{ padding: '18px', borderRadius: '14px', border: '2px solid #e5e5e5', background: 'white', color: '#8a7a6f', fontSize: '16px', fontWeight: '600' }}>I don't know 🤔</button>}
+                  <button onClick={checkAnswer} disabled={!userInput.trim()} style={{ padding: '18px', borderRadius: '14px', background: userInput.trim() ? 'linear-gradient(135deg, #ff8b5a, #f97316)' : '#e5e5e5', color: userInput.trim() ? 'white' : '#a0a0a0', fontSize: '16px', fontWeight: '600', boxShadow: userInput.trim() ? '0 4px 16px rgba(255,139,90,0.4)' : 'none' }}>{practiceMode ? 'Practice ↵' : 'Check ↵'}</button>
+                </div>
+
+                <button onClick={() => setCurrentGroup(null)} style={{ width: '100%', padding: '14px', marginTop: '16px', borderRadius: '12px', background: 'transparent', color: '#8a7a6f', fontSize: '14px' }}>Exit Round</button>
+              </div>
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<FlashcardApp />);
+  </script>
 </body>
 </html>
